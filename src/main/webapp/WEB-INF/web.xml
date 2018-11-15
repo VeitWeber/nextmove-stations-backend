@@ -13,4 +13,13 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
+    <!--<filter>-->
+        <!--<filter-name>Auth0Filter</filter-name>-->
+        <!--<filter-class>net.eclever.backend.graphql.filter.Auth0Filter</filter-class>-->
+    <!--</filter>-->
+    <!--<filter-mapping>-->
+        <!--<filter-name>Auth0Filter</filter-name>-->
+        <!--<url-pattern>/graphql/*</url-pattern>-->
+    <!--</filter-mapping>-->
+
 </web-app>

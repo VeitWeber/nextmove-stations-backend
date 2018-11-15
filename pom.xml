@@ -18,9 +18,11 @@
     </repositories>
 
     <properties>
-        <jee.version>7.0</jee.version>
+        <jee.version>8.0</jee.version>
         <java.version>1.8</java.version>
-
+        <auth0-jwt.version>3.4.0</auth0-jwt.version>
+        <auth0-jwk.version>0.6.0</auth0-jwk.version>
+        <guava.version>20.0</guava.version>
     </properties>
 
     <dependencies>
@@ -59,6 +61,28 @@
             <version>4.0.0</version>
             <scope>compile</scope>
         </dependency>
+
+        <!-- Auth0 JWT -->
+        <dependency>
+            <groupId>com.auth0</groupId>
+            <artifactId>java-jwt</artifactId>
+            <version>${auth0-jwt.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.auth0</groupId>
+            <artifactId>jwks-rsa</artifactId>
+            <version>${auth0-jwk.version}</version>
+        </dependency>
+
+        <!-- Google Guava -->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${guava.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
 
     </dependencies>
 
