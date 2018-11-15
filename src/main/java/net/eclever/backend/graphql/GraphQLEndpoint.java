@@ -6,7 +6,11 @@ import graphql.servlet.SimpleGraphQLServlet;
 
 import javax.servlet.annotation.WebServlet;
 
-
+/**
+ * GraphQL endpoint for stations
+ *
+ * @author Veit Weber, v.weber@nextmove.de, 15.11.2018
+ */
 @WebServlet(urlPatterns = "/graphql")
 public class GraphQLEndpoint extends SimpleGraphQLServlet {
 	public GraphQLEndpoint() {
