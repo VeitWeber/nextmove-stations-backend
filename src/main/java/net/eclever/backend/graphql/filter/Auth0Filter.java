@@ -28,14 +28,12 @@ import java.security.interfaces.RSAPublicKey;
 public class Auth0Filter implements Filter {
 
 	@Override
-	public void init(FilterConfig filterConfig) throws ServletException {
+	public void init(FilterConfig filterConfig) {
 
 	}
 
 	@Override
 	public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain chain) throws IOException, ServletException {
-
-//	public void filter(ContainerRequestContext requestContext) {
 
 		// Get the HTTP Authorization header from the request
 		String authorizationHeader = ((HttpServletRequest) servletRequest).getHeader(HttpHeaders.AUTHORIZATION);
@@ -75,6 +73,8 @@ public class Auth0Filter implements Filter {
 					.withIssuer("https://nextmove.eu.auth0.com/")
 					.build();
 			verifier.verify(idToken);
+
+			chain.doFilter(servletRequest, servletResponse);
 		} catch (ArrayIndexOutOfBoundsException ex) {
 			((HttpServletResponse) servletResponse).sendError(Response.Status.UNAUTHORIZED.getStatusCode(), "Malformed id or access token in authorization header.");
 		} catch (JwkException ex) {
@@ -82,5 +82,10 @@ public class Auth0Filter implements Filter {
 		} catch (JWTVerificationException exception) {
 			((HttpServletResponse) servletResponse).sendError(Response.Status.UNAUTHORIZED.getStatusCode(), "Id or access token in authorization header could not be verified.");
 		}
+	}
+
+	@Override
+	public void destroy() {
+
 	}
 }
