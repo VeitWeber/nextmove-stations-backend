@@ -1,0 +1,13 @@
+type Station {
+  url: String!
+  description: String!
+}
+
+type Query {
+  allStations: [Station]
+}
+
+schema {
+  query: Query
+}
+
