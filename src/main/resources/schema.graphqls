@@ -7,7 +7,12 @@ type Query {
   allStations: [Station]
 }
 
+type Mutation {
+  createStation(url: String!, description: String!): Station
+}
+
 schema {
   query: Query
+  mutation: Mutation
 }
 
