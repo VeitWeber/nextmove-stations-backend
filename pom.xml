@@ -18,6 +18,7 @@
     </repositories>
 
     <properties>
+        <deployment.name>api</deployment.name>
         <jee.version>8.0</jee.version>
         <java.version>1.8</java.version>
         <auth0-jwt.version>3.4.0</auth0-jwt.version>
@@ -87,7 +88,7 @@
     </dependencies>
 
     <build>
-        <finalName>${artifactId}</finalName>
+        <finalName>${deployment.name}</finalName>
         <plugins>
 
             <!-- compiler plugin -->
@@ -106,7 +107,7 @@
                 <artifactId>maven-war-plugin</artifactId>
                 <version>2.3</version>
                 <configuration>
-                    <warName>${artifactId}</warName>
+                    <warName>${deployment.name}</warName>
                     <failOnMissingWebXml>false</failOnMissingWebXml>
                 </configuration>
             </plugin>
