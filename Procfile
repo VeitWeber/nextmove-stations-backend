@@ -1,1 +1,1 @@
-web: java -jar lib/payara-micro-5.191.jar --deploy target/pignon-api.war --port $PORT
+web: java -jar lib/payara-micro-5.191.jar --deploy target/api.war --port $PORT
