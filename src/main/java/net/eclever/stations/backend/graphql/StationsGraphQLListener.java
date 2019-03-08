@@ -21,17 +21,17 @@ import javax.servlet.annotation.WebListener;
 @WebListener
 public class StationsGraphQLListener implements ServletContextListener {
 	@Inject
-	private MembershipGraphQLApi membershipGraphQLApi;
+	private StationsGraphQLApi stationsGraphQLApi;
 
 	@Override
 	public void contextInitialized(ServletContextEvent sce) {
 		GraphQLSchema schema = new GraphQLSchemaGenerator()
 				.withResolverBuilders(new AnnotatedResolverBuilder().withDefaultFilters())
-				.withOperationsFromSingleton(membershipGraphQLApi, MembershipGraphQLApi.class)
+				.withOperationsFromSingleton(stationsGraphQLApi, StationsGraphQLApi.class)
 				.generate();
 
-		SimpleGraphQLServlet.Builder builder = SimpleGraphQLServlet.builder(schema);
-//				.withGraphQLErrorHandler(new MembershipErrorHandler());
+		SimpleGraphQLServlet.Builder builder = SimpleGraphQLServlet.builder(schema)
+				.withGraphQLErrorHandler(new StationsGraphQLErrorHandler());
 
 		SimpleGraphQLServlet graphQLServlet = builder.build();
 

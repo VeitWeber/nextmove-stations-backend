@@ -12,6 +12,6 @@ import java.util.Vector;
 @Data
 public class StationRepository {
 
-	private Vector<Station> cachedStations = new Vector<>();
+	private Station[] cachedStations = new Station[0];
 
 }
