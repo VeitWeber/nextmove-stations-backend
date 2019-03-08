@@ -24,6 +24,8 @@
         <auth0-jwt.version>3.4.0</auth0-jwt.version>
         <auth0-jwk.version>0.6.0</auth0-jwk.version>
         <guava.version>20.0</guava.version>
+        <spqr.version>0.9.7</spqr.version>
+        <logback.version>1.2.1</logback.version>
     </properties>
 
     <dependencies>
@@ -47,20 +49,19 @@
         <dependency>
             <groupId>com.graphql-java</groupId>
             <artifactId>graphql-java</artifactId>
-            <version>3.0.0</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.graphql-java</groupId>
-            <artifactId>graphql-java-tools</artifactId>
-            <version>3.2.0</version>
+            <version>8.0</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.graphql-java</groupId>
             <artifactId>graphql-java-servlet</artifactId>
-            <version>4.0.0</version>
+            <version>5.0.0</version>
             <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.leangen.graphql</groupId>
+            <artifactId>spqr</artifactId>
+            <version>${spqr.version}</version>
         </dependency>
 
         <!-- Auth0 JWT -->
@@ -82,6 +83,24 @@
             <artifactId>guava</artifactId>
             <version>${guava.version}</version>
             <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.4</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mongodb</groupId>
+            <artifactId>mongo-java-driver</artifactId>
+            <version>3.9.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${logback.version}</version>
         </dependency>
 
 
