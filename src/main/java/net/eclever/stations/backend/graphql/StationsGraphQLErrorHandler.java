@@ -6,7 +6,6 @@ package net.eclever.stations.backend.graphql;
 
 import graphql.ExceptionWhileDataFetching;
 import graphql.GraphQLError;
-import graphql.servlet.GenericGraphQLError;
 import graphql.servlet.GraphQLErrorHandler;
 
 import javax.validation.ConstraintViolation;

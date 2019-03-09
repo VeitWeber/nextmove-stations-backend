@@ -1,7 +1,9 @@
 package net.eclever.stations.backend.graphql;
 
 import graphql.schema.GraphQLSchema;
-import graphql.servlet.SimpleGraphQLServlet;
+import graphql.servlet.GraphQLConfiguration;
+import graphql.servlet.GraphQLHttpServlet;
+import graphql.servlet.GraphQLObjectMapper;
 import io.leangen.graphql.GraphQLSchemaGenerator;
 import io.leangen.graphql.metadata.strategy.query.AnnotatedResolverBuilder;
 
@@ -17,6 +19,26 @@ import javax.servlet.annotation.WebListener;
  *
  * @author Veit Weber, v.weber@nextmove.de, 15.11.2018
  */
+//@WebServlet(name = "StationsGraphQLListener", urlPatterns = "/graphql/*", loadOnStartup = 1)
+//public class StationsGraphQLListener extends GraphQLHttpServlet {
+//
+//	@Inject
+//	private StationsGraphQLApi stationsGraphQLApi;
+//
+//	@Override
+//	protected GraphQLConfiguration getConfiguration() {
+//		return GraphQLConfiguration.with(createSchema()).build();
+//	}
+//
+//	private GraphQLSchema createSchema() {
+//		return new GraphQLSchemaGenerator()
+//				.withResolverBuilders(new AnnotatedResolverBuilder().withDefaultFilters())
+//				.withOperationsFromSingleton(stationsGraphQLApi, StationsGraphQLApi.class)
+//				.generate();
+//	}
+//
+//}
+
 
 @WebListener
 public class StationsGraphQLListener implements ServletContextListener {
@@ -30,16 +52,19 @@ public class StationsGraphQLListener implements ServletContextListener {
 				.withOperationsFromSingleton(stationsGraphQLApi, StationsGraphQLApi.class)
 				.generate();
 
-		SimpleGraphQLServlet.Builder builder = SimpleGraphQLServlet.builder(schema)
-				.withGraphQLErrorHandler(new StationsGraphQLErrorHandler());
+		GraphQLObjectMapper objectMapper = GraphQLObjectMapper.newBuilder()
+				.withGraphQLErrorHandler(new StationsGraphQLErrorHandler())
+				.build();
 
-		SimpleGraphQLServlet graphQLServlet = builder.build();
+		GraphQLConfiguration configuration = GraphQLConfiguration.with(schema)
+				.with(objectMapper)
+				.build();
+
+		GraphQLHttpServlet graphQLHttpServlet = GraphQLHttpServlet.with(configuration);
 
 		ServletContext context = sce.getServletContext();
-
-		ServletRegistration.Dynamic servlet = context.addServlet(SERVLET_NAME, graphQLServlet);
+		ServletRegistration.Dynamic servlet = context.addServlet(SERVLET_NAME, graphQLHttpServlet);
 		servlet.addMapping(SERVLET_URL);
-
 	}
 
 	@Override
@@ -50,3 +75,4 @@ public class StationsGraphQLListener implements ServletContextListener {
 	private static final String[] SERVLET_URL = new String[]{"/graphql/*"};
 
 }
+

@@ -45,6 +45,18 @@ public class StationService {
 					.find()
 					.sort(ascending("name"));
 
+//			MongoCursor<Document> cursor = mongoCollection.iterator();
+//			while (cursor.hasNext()) {
+//				Document document = cursor.next();
+//
+//				Station station =
+//						new Station(document.get("_id").toString(), document.getString("author"), document.getString("name"), document.getString("operator"),
+//								document.get("address") != null ? gson.fromJson(((Document) document.get("address")).toJson(), StationAddress.class) : null,
+//								document.get("coordinates") != null ? gson.fromJson(((Document) document.get("coordinates")).toJson(), StationLocation.class) : null,
+//								document.get("approach") != null ? gson.fromJson(((Document) document.get("approach")).toJson(), StationLocation.class) : null);
+//				cachedStationList.add(station);
+//			}
+
 			mongoCollection.forEach((Consumer<Document>) document -> {
 				Station station =
 						new Station(document.get("_id").toString(), document.getString("author"), document.getString("name"), document.getString("operator"),

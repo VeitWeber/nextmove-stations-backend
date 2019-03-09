@@ -23,16 +23,16 @@ public class StationsGraphQLApi {
 	StationService stationService;
 
 	@GraphQLQuery(name = "stations", description = "Get all stations.")
-	public Station[] getAllStations() {
-		return this.stationRepository.getCachedStations();
+	public StationData getAllStations() {
+		return new StationData(this.stationRepository.getCachedStations().length, this.stationRepository.getCachedStations());
 	}
 
 	@GraphQLQuery(name = "stations", description = "Get all stations.")
-	public Station[] getAllStations(@GraphQLArgument(name = "forceUpdate", description = "Invalidate cache and get the stations from the database.") Optional<Boolean> optionalForceUpdate) {
+	public StationData getAllStations(@GraphQLArgument(name = "forceUpdate", description = "Invalidate cache and get the stations from the database.") Optional<Boolean> optionalForceUpdate) {
 		if (optionalForceUpdate.isPresent() && optionalForceUpdate.get())
 			stationService.refreshValues();
 
-		return this.stationRepository.getCachedStations();
+		return new StationData(this.stationRepository.getCachedStations().length, this.stationRepository.getCachedStations());
 	}
 }
 
