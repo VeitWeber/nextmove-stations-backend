@@ -10,6 +10,6 @@ import net.eclever.stations.backend.domain.Station;
 @Data
 @AllArgsConstructor
 public class StationData {
-	public int count;
+	public int totalCount;
 	public Station[] stationList = new Station[0];
 }
