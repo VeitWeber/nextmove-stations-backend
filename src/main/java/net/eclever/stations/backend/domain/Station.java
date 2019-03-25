@@ -20,5 +20,4 @@ public class Station {
 	private StationAddress address;
 	private StationLocation coordinates;
 	private StationLocation approach;
-
 }
