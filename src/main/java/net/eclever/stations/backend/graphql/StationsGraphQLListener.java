@@ -19,27 +19,6 @@ import javax.servlet.annotation.WebListener;
  *
  * @author Veit Weber, v.weber@nextmove.de, 15.11.2018
  */
-//@WebServlet(name = "StationsGraphQLListener", urlPatterns = "/graphql/*", loadOnStartup = 1)
-//public class StationsGraphQLListener extends GraphQLHttpServlet {
-//
-//	@Inject
-//	private StationsGraphQLApi stationsGraphQLApi;
-//
-//	@Override
-//	protected GraphQLConfiguration getConfiguration() {
-//		return GraphQLConfiguration.with(createSchema()).build();
-//	}
-//
-//	private GraphQLSchema createSchema() {
-//		return new GraphQLSchemaGenerator()
-//				.withResolverBuilders(new AnnotatedResolverBuilder().withDefaultFilters())
-//				.withOperationsFromSingleton(stationsGraphQLApi, StationsGraphQLApi.class)
-//				.generate();
-//	}
-//
-//}
-
-
 @WebListener
 public class StationsGraphQLListener implements ServletContextListener {
 	@Inject
