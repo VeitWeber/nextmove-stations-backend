@@ -2,13 +2,12 @@ package net.eclever.stations.backend.domain;
 
 import lombok.Data;
 
-import javax.ejb.Singleton;
-import java.util.Vector;
+import javax.enterprise.context.ApplicationScoped;
 
 /**
  * @author Veit Weber, , $(DATE)
  */
-@Singleton
+@ApplicationScoped
 @Data
 public class StationRepository {
 
