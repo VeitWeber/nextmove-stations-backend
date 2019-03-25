@@ -15,6 +15,7 @@
             width: 100%;
             overflow: hidden;
         }
+
         #graphiql {
             height: 100vh;
         }
@@ -37,7 +38,7 @@
       copy them directly into your environment, or perhaps include them in your
       favored resource bundler.
      -->
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/graphiql@0.11.2/graphiql.css" />
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/graphiql@0.11.2/graphiql.css"/>
     <script src="//cdn.jsdelivr.net/npm/graphiql@0.11.2/graphiql.js"></script>
 
 </head>
@@ -78,14 +79,17 @@
         parameters.query = newQuery;
         updateURL();
     }
+
     function onEditVariables(newVariables) {
         parameters.variables = newVariables;
         updateURL();
     }
+
     function onEditOperationName(newOperationName) {
         parameters.operationName = newOperationName;
         updateURL();
     }
+
     function updateURL() {
         var newSearch = '?' + Object.keys(parameters).filter(function (key) {
             return Boolean(parameters[key]);
@@ -95,13 +99,14 @@
         }).join('&');
         history.replaceState(null, null, newSearch);
     }
+
     // Defines a GraphQL fetcher using the fetch API. You're not required to
     // use fetch, and could instead implement graphQLFetcher however you like,
     // as long as it returns a Promise or Observable.
     function graphQLFetcher(graphQLParams) {
         // This example expects a GraphQL server at the path /graphql.
         // Change this to point wherever you host your GraphQL server.
-        return fetch('/stations-backend/graphql', {
+        return fetch('/api/graphql', {
             method: 'post',
             headers: {
                 'Accept': 'application/json',
@@ -119,6 +124,7 @@
             }
         });
     }
+
     // Render <GraphiQL /> into the body.
     // See the README in the top level of this module to learn more about
     // how you can customize GraphiQL by providing different values or

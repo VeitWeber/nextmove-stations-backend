@@ -1,0 +1,14 @@
+config:
+  target: 'https://stations-backend.herokuapp.com/api'
+  phases:
+    - duration: 60
+      arrivalRate: 20
+#  defaults:
+#    headers:
+#      x-my-service-auth: '987401838271002188298567'
+scenarios:
+  - flow:
+      - get:
+          url: '/graphql'
+          qs:
+            query: '%7BallStations%7Bname%7D%7D'
