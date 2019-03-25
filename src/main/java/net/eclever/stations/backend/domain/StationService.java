@@ -10,10 +10,12 @@ import lombok.extern.java.Log;
 import net.eclever.stations.backend.Environment;
 import org.bson.Document;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.Schedule;
 import javax.ejb.Singleton;
+import javax.ejb.Startup;
 import javax.inject.Inject;
-import java.util.Vector;
+import java.util.LinkedList;
 import java.util.function.Consumer;
 
 import static com.mongodb.client.model.Sorts.ascending;
@@ -21,6 +23,7 @@ import static com.mongodb.client.model.Sorts.ascending;
 /**
  * @author Veit Weber, , $(DATE)
  */
+@Startup
 @Singleton
 @Log
 public class StationService {
@@ -28,14 +31,19 @@ public class StationService {
 	@Inject
 	StationRepository stationRepository;
 
+	@PostConstruct
+	void init() {
+		this.refreshValues();
+	}
+
 	@Schedule(minute = "*/15", hour = "*", second = "*", persistent = false)
 	public void refreshValues() {
-		Vector<Station> cachedStationList = new Vector<>();
+		LinkedList<Station> cachedStationList = new LinkedList<>();
 		try {
 			log.info("[+] Get Stations");
 			Gson gson = new Gson();
 
-			MongoClientURI uri = new MongoClientURI(System.getenv("MONGODB_URI"));
+			MongoClientURI uri = new MongoClientURI(System.getenv("STATION_MONGODB_URI"));
 			MongoClient mongoClient = new MongoClient(uri);
 
 			MongoDatabase mongoDatabase = mongoClient.getDatabase(Environment.MongoDbProperties.DB_NAME);
