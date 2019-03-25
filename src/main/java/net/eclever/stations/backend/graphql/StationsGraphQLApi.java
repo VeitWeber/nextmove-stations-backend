@@ -226,6 +226,60 @@ public class StationsGraphQLApi {
 		}
 	}
 
+	@GraphQLQuery(name = "station", description = "Get station details.")
+	public Station getStation(@GraphQLArgument(name = "id", description = "Station ID") String stationId) {
+		try {
+			return null;
+		} catch (Exception ex) {
+			log.severe(Throwables.getStackTraceAsString(Throwables.getRootCause(ex)));
+
+			if (ex instanceof IllegalArgumentException)
+				throw ex;
+
+			throw new IllegalStateException();
+		}
+	}
+
+	@GraphQLQuery(name = "stationsNearby", description = "Get stations between bounding box coordinates.")
+	public StationData getAllStationsNearby(
+			@GraphQLArgument(name = "bBox_ne_latitude", description = "Bounding box north east latitude.") Double boundingBoxNeLatitude,
+			@GraphQLArgument(name = "bBox_ne_longitude", description = "Bounding box north east longitude.") Double boundingBoxNeLongitude,
+			@GraphQLArgument(name = "bBox_sw_latitude", description = "Bounding box south west latitude.") Double boundingBoxSwLatitude,
+			@GraphQLArgument(name = "bBox_sw_longitude", description = "Bounding box south west longitude.") Double boundingBoxSwLongitude) {
+		try {
+			Station[] stationsNearby = stationRepository.getAllStationsNearby(boundingBoxNeLatitude, boundingBoxNeLongitude, boundingBoxSwLatitude, boundingBoxSwLongitude, null, null);
+			return new StationData(stationsNearby.length, stationsNearby);
+		} catch (Exception ex) {
+			log.severe(Throwables.getStackTraceAsString(Throwables.getRootCause(ex)));
+
+			if (ex instanceof IllegalArgumentException)
+				throw ex;
+
+			throw new IllegalStateException();
+		}
+	}
+
+	@GraphQLQuery(name = "stationsNearby", description = "Get stations between bounding box coordinates.")
+	public StationData getAllStationsNearby(
+			@GraphQLArgument(name = "bBox_ne_latitude", description = "Bounding box north east latitude.") Double boundingBoxNeLatitude,
+			@GraphQLArgument(name = "bBox_ne_longitude", description = "Bounding box north east longitude.") Double boundingBoxNeLongitude,
+			@GraphQLArgument(name = "bBox_sw_latitude", description = "Bounding box south west latitude.") Double boundingBoxSwLatitude,
+			@GraphQLArgument(name = "bBox_sw_longitude", description = "Bounding box south west longitude.") Double boundingBoxSwLongitude,
+			@GraphQLArgument(name = "first", description = "First element") int first,
+			@GraphQLArgument(name = "offset", description = "Offset") int offset) {
+		try {
+			Station[] stationsNearby = stationRepository.getAllStationsNearby(boundingBoxNeLatitude, boundingBoxNeLongitude, boundingBoxSwLatitude, boundingBoxSwLongitude, first, offset);
+			return new StationData(stationsNearby.length, stationsNearby);
+		} catch (Exception ex) {
+			log.severe(Throwables.getStackTraceAsString(Throwables.getRootCause(ex)));
+
+			if (ex instanceof IllegalArgumentException)
+				throw ex;
+
+			throw new IllegalStateException();
+		}
+	}
+
 
 	private Date transformTimestamp(String timestamp) throws ParseException {
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
