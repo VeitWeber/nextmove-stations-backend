@@ -32,6 +32,9 @@ public class StationsGraphQLErrorHandler implements GraphQLErrorHandler {
 	private GraphQLError getGraphQLError(Throwable t) {
 		if (t instanceof GraphQLError) {
 			return (GraphQLError) t;
+		} else if (t instanceof IllegalArgumentException) {
+			IllegalArgumentException illegalArgumentException = (IllegalArgumentException) t;
+			return new StationGraphQLError(illegalArgumentException.getMessage(), 400);
 		} else if (t instanceof ConstraintViolationException) {
 			ConstraintViolationException constraintViolationException = (ConstraintViolationException) t;
 			return new StationGraphQLError(getConstraintViolationMessage(constraintViolationException), 400);
