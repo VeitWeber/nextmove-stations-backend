@@ -14,11 +14,6 @@ import javax.servlet.ServletContextListener;
 import javax.servlet.ServletRegistration;
 import javax.servlet.annotation.WebListener;
 
-/**
- * GraphQL endpoint for stations
- *
- * @author Veit Weber, v.weber@nextmove.de, 15.11.2018
- */
 @WebListener
 public class StationsGraphQLListener implements ServletContextListener {
 	@Inject
