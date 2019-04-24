@@ -47,6 +47,5 @@ public class StationsGraphQLListener implements ServletContextListener {
 
 	private static final String SERVLET_NAME = "StationsGraphQLServlet";
 	private static final String[] SERVLET_URL = new String[]{"/graphql/*"};
-
 }
 
