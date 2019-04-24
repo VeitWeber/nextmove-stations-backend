@@ -1,38 +1,31 @@
 package net.eclever.stations.backend.rest.filter;
 
-import com.auth0.jwk.Jwk;
-import com.auth0.jwk.JwkException;
-import com.auth0.jwk.JwkProvider;
-import com.auth0.jwk.UrlJwkProvider;
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.JWTVerifier;
-import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.auth0.jwt.interfaces.DecodedJWT;
-import com.google.common.base.Strings;
-import org.slf4j.Logger;
-
-import javax.annotation.Priority;
-import javax.inject.Inject;
-import javax.ws.rs.Priorities;
-import javax.ws.rs.container.ContainerRequestContext;
-import javax.ws.rs.container.ContainerRequestFilter;
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.ext.Provider;
-import java.security.interfaces.RSAPublicKey;
+import javax.servlet.*;
+import javax.servlet.annotation.WebFilter;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.util.stream.Collectors;
 
 
-/**
- * Filter for Auth0 Check
- *
- * @author Veit Weber, v.weber@nextmove.de, 26.09.2018
- */
-@Provider
-@Auth0Secured
-@Priority(Priorities.AUTHENTICATION)
-public class Auth0Filter implements ContainerRequestFilter {
+@WebFilter(filterName = "AuthorizationFilter", urlPatterns = "/graphql/*")
+public class AuthorizationFilter implements Filter {
 
+	@Override
+	public void init(FilterConfig filterConfig) throws ServletException {
+	}
+
+	@Override
+	public void doFilter(ServletRequest request, ServletResponse response,
+	                     FilterChain chain) throws IOException, ServletException {
+		MultiReadHttpServletRequestWrapper multiReadRequest = new MultiReadHttpServletRequestWrapper((HttpServletRequest) request);
+		chain.doFilter(multiReadRequest, response);
+	}
+
+	@Override
+	public void destroy() {
+	}
+
+	/*
 	@Override
 	public void filter(ContainerRequestContext requestContext) {
 		// Get the HTTP Authorization header from the request
@@ -80,4 +73,6 @@ public class Auth0Filter implements ContainerRequestFilter {
 			requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED.getStatusCode(), "Id or access token in authorization header could not be verified.").build());
 		}
 	}
+
+	 */
 }
