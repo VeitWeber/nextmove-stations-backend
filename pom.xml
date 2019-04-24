@@ -26,7 +26,7 @@
         <auth0-jwt.version>3.4.0</auth0-jwt.version>
         <auth0-jwk.version>0.6.0</auth0-jwk.version>
         <guava.version>20.0</guava.version>
-        <spqr.version>0.9.7</spqr.version>
+        <spqr.version>0.9.9</spqr.version>
         <logback.version>1.2.1</logback.version>
     </properties>
 
