@@ -18,32 +18,19 @@ public class AuthorizationFilter implements Filter {
 	public void doFilter(ServletRequest request, ServletResponse response,
 	                     FilterChain chain) throws IOException, ServletException {
 		MultiReadHttpServletRequestWrapper multiReadRequest = new MultiReadHttpServletRequestWrapper((HttpServletRequest) request);
-		chain.doFilter(multiReadRequest, response);
-	}
 
-	@Override
-	public void destroy() {
-	}
-
-	/*
-	@Override
-	public void filter(ContainerRequestContext requestContext) {
-		// Get the HTTP Authorization header from the request
 		String authorizationHeader = requestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
 
-		// Check if the HTTP Authorization header is present and formatted correctly
 		if (Strings.isNullOrEmpty(authorizationHeader)) {
 			requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED.getStatusCode(), "No token in authorization header provided.").build());
 			return;
 		}
 
 		try {
-			// Extract the token from the HTTP Authorization header
 			String[] tokenBuffer = authorizationHeader.split("#\\|#");
 			String accessToken = tokenBuffer[0];
 			String idToken = tokenBuffer[1];
 
-			// Decode and verify access token
 			DecodedJWT jwt = JWT.decode(accessToken);
 
 			JwkProvider provider = new UrlJwkProvider("https://nextmove.eu.auth0.com/.well-known/jwks.json");
@@ -55,7 +42,6 @@ public class AuthorizationFilter implements Filter {
 					.build();
 			verifier.verify(accessToken);
 
-			// Decode and verify id token
 			jwt = JWT.decode(idToken);
 
 			jwk = provider.get(jwt.getKeyId());
@@ -74,5 +60,14 @@ public class AuthorizationFilter implements Filter {
 		}
 	}
 
-	 */
+
+		chain.doFilter(multiReadRequest, response);
+
+
+	}
+
+	@Override
+	public void destroy() {
+	}
+
 }
