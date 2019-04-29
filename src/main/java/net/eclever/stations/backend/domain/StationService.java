@@ -51,6 +51,7 @@ public class StationService {
 
 			FindIterable mongoCollection = collection
 					.find()
+					.limit(20)
 					.sort(ascending("name"));
 
 //			MongoCursor<Document> cursor = mongoCollection.iterator();
