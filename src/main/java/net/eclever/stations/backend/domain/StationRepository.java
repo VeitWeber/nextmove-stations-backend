@@ -13,7 +13,10 @@ import net.eclever.stations.backend.Environment;
 import org.bson.Document;
 
 import javax.enterprise.context.ApplicationScoped;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.LinkedList;
 import java.util.function.Consumer;
 
 import static com.mongodb.client.model.Filters.gte;
@@ -183,13 +186,25 @@ public class StationRepository {
 			ArrayList<Chargepoint> chargepoints = new ArrayList<>();
 			document.get("chargepoints", ArrayList.class).forEach(chargepoint -> {
 				Document chargepointDoc = (Document) chargepoint;
-				chargepoints.add(new Chargepoint(chargepointDoc.getString("id"), chargepointDoc.getBoolean("private"), chargepointDoc.getInteger("phases"), chargepointDoc.getInteger("power"),
-						chargepointDoc.get("type") != null ? ((Document) chargepointDoc.get("type")).getString("id") : null, chargepointDoc.getString("status"), chargepointDoc.getString("problem"),
-						chargepointDoc.getDouble("ampere"), chargepointDoc.getDouble("volt"), chargepointDoc.getString("plugCable"),
+				chargepoints.add(new Chargepoint(
+						chargepointDoc.getString("id"),
+						chargepointDoc.getBoolean("private"),
+						chargepointDoc.getInteger("phases"),
+						chargepointDoc.getInteger("power"),
+						chargepointDoc.get("type") != null ? ((Document) chargepointDoc.get("type")).getString("id") : null,
+						chargepointDoc.getString("status"),
+						chargepointDoc.getString("problem"),
+						chargepointDoc.getDouble("ampere"),
+						chargepointDoc.getDouble("volt"),
+						chargepointDoc.getString("plugCable"),
 						chargepointDoc.getBoolean("pricingFree"), chargepointDoc.getString("pricingType"), chargepointDoc.getString("pricingValue")));
 			});
 
-			return new Station(document.get("_id").toString(), document.getString("author"), document.getString("name"), document.getString("operator"),
+			return new Station(
+					document.get("_id").toString(),
+					document.getString("author"),
+					document.getString("name"),
+					document.getString("operator"),
 					document.get("address") != null ? gson.fromJson(((Document) document.get("address")).toJson(), StationAddress.class) : null,
 					document.get("coordinates") != null ? gson.fromJson(((Document) document.get("coordinates")).toJson(), Location.class) : null,
 					document.get("approach") != null ? gson.fromJson(((Document) document.get("approach")).toJson(), Location.class) : null,
