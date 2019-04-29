@@ -16,11 +16,6 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.Optional;
 
-/**
- * Stations Queries and Mutations
- *
- * @author Veit Weber, v.weber@eclever.io, 25.03.2019
- */
 @ApplicationScoped
 @Log
 public class StationsGraphQLApi {
