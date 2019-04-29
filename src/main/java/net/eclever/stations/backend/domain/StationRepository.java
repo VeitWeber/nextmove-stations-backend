@@ -1,5 +1,6 @@
 package net.eclever.stations.backend.domain;
 
+import com.google.common.base.Throwables;
 import com.google.gson.Gson;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
@@ -12,18 +13,14 @@ import net.eclever.stations.backend.Environment;
 import org.bson.Document;
 
 import javax.enterprise.context.ApplicationScoped;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.LinkedList;
+import java.util.*;
 import java.util.function.Consumer;
 
 import static com.mongodb.client.model.Filters.gte;
 import static com.mongodb.client.model.Filters.or;
 import static com.mongodb.client.model.Sorts.ascending;
 
-/**
- * @author Veit Weber, , $(DATE)
- */
+
 @ApplicationScoped
 @Data
 @Log
@@ -35,8 +32,6 @@ public class StationRepository {
 	public Station[] getStationsSinceLastUpdate(Date lastUpdate) {
 		LinkedList<Station> cachedStationList = new LinkedList<>();
 		try {
-			Gson gson = new Gson();
-
 			MongoClientURI uri = new MongoClientURI(System.getenv("STATION_MONGODB_URI"));
 			MongoClient mongoClient = new MongoClient(uri);
 
@@ -49,12 +44,9 @@ public class StationRepository {
 
 
 			mongoCollection.forEach((Consumer<Document>) document -> {
-				Station station =
-						new Station(document.get("_id").toString(), document.getString("author"), document.getString("name"), document.getString("operator"),
-								document.get("address") != null ? gson.fromJson(((Document) document.get("address")).toJson(), StationAddress.class) : null,
-								document.get("coordinates") != null ? gson.fromJson(((Document) document.get("coordinates")).toJson(), StationLocation.class) : null,
-								document.get("approach") != null ? gson.fromJson(((Document) document.get("approach")).toJson(), StationLocation.class) : null);
-				cachedStationList.add(station);
+				Station station = createStationFromDoc(document);
+				if (station != null)
+					cachedStationList.add(station);
 			});
 
 			mongoClient.close();
@@ -74,8 +66,6 @@ public class StationRepository {
 	                                      Integer offset) {
 		LinkedList<Station> cachedStationList = new LinkedList<>();
 		try {
-			Gson gson = new Gson();
-
 			MongoClientURI uri = new MongoClientURI(System.getenv("STATION_MONGODB_URI"));
 			MongoClient mongoClient = new MongoClient(uri);
 
@@ -114,12 +104,9 @@ public class StationRepository {
 
 
 			mongoCollection.forEach((Consumer<Document>) document -> {
-				Station station =
-						new Station(document.get("_id").toString(), document.getString("author"), document.getString("name"), document.getString("operator"),
-								document.get("address") != null ? gson.fromJson(((Document) document.get("address")).toJson(), StationAddress.class) : null,
-								document.get("coordinates") != null ? gson.fromJson(((Document) document.get("coordinates")).toJson(), StationLocation.class) : null,
-								document.get("approach") != null ? gson.fromJson(((Document) document.get("approach")).toJson(), StationLocation.class) : null);
-				cachedStationList.add(station);
+				Station station = createStationFromDoc(document);
+				if (station != null)
+					cachedStationList.add(station);
 			});
 
 			mongoClient.close();
@@ -153,7 +140,7 @@ public class StationRepository {
 									Arrays.asList(
 											longitude,
 											latitude
-											),
+									),
 									(radius / 6378.1)
 									)
 							)
@@ -175,21 +162,45 @@ public class StationRepository {
 
 
 			mongoCollection.forEach((Consumer<Document>) document -> {
-				Station station =
-						new Station(document.get("_id").toString(), document.getString("author"), document.getString("name"), document.getString("operator"),
-								document.get("address") != null ? gson.fromJson(((Document) document.get("address")).toJson(), StationAddress.class) : null,
-								document.get("coordinates") != null ? gson.fromJson(((Document) document.get("coordinates")).toJson(), StationLocation.class) : null,
-								document.get("approach") != null ? gson.fromJson(((Document) document.get("approach")).toJson(), StationLocation.class) : null);
-				cachedStationList.add(station);
+				Station station = createStationFromDoc(document);
+				if (station != null)
+					cachedStationList.add(station);
 			});
 
 			mongoClient.close();
 			return cachedStationList.toArray(new Station[0]);
 
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			log.severe(Throwables.getStackTraceAsString(ex));
 			throw ex;
 		}
 	}
 
+
+	static Station createStationFromDoc(Document document) {
+		try {
+			Gson gson = new Gson();
+			ArrayList<Chargepoint> chargepoints = new ArrayList<>();
+			document.get("chargepoints", ArrayList.class).forEach(chargepoint -> {
+				Document chargepointDoc = (Document) chargepoint;
+				chargepoints.add(new Chargepoint(chargepointDoc.getString("id"), chargepointDoc.getBoolean("private"), chargepointDoc.getInteger("phases"), chargepointDoc.getInteger("power"),
+						chargepointDoc.get("type") != null ? ((Document) chargepointDoc.get("type")).getString("id") : null, chargepointDoc.getString("status"), chargepointDoc.getString("problem"),
+						chargepointDoc.getDouble("ampere"), chargepointDoc.getDouble("volt"), chargepointDoc.getString("plugCable"),
+						chargepointDoc.getBoolean("pricingFree"), chargepointDoc.getString("pricingType"), chargepointDoc.getString("pricingValue")));
+			});
+
+			return new Station(document.get("_id").toString(), document.getString("author"), document.getString("name"), document.getString("operator"),
+					document.get("address") != null ? gson.fromJson(((Document) document.get("address")).toJson(), StationAddress.class) : null,
+					document.get("coordinates") != null ? gson.fromJson(((Document) document.get("coordinates")).toJson(), Location.class) : null,
+					document.get("approach") != null ? gson.fromJson(((Document) document.get("approach")).toJson(), Location.class) : null,
+					document.get("createdat") != null ? document.getDate("createdat").getTime() : null,
+					document.get("editedat") != null ? document.getDate("editedat").getTime() : null,
+					document.getString("approachDescription"),
+					document.getString("manufacturer"),
+					document.get("chargepoints") != null ? chargepoints : null);
+		} catch (Exception ex) {
+			log.severe(Throwables.getStackTraceAsString(ex));
+		}
+		return null;
+	}
 }
