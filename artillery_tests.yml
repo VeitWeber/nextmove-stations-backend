@@ -1,5 +1,8 @@
 config:
-  target: 'https://stations-backend.herokuapp.com/api'
+#  target: 'https://dev.eclever.net/stations-api'
+#  target: 'http://localhost:8080/stations-api'
+ # target: 'http://localhost:3000'
+  target: 'http://andesign.de:3000/api/'
   phases:
     - duration: 60
       arrivalRate: 20
@@ -8,7 +11,34 @@ config:
 #      x-my-service-auth: '987401838271002188298567'
 scenarios:
   - flow:
+#      - post:
+#          url: '/graphql'
+#          json:
+#            query: '
+#query{
+#  stations(forceUpdate:false, first:0, offset:7000){
+#    totalCount
+#    stationList{
+#    id
+#    author
+#    name
+#    address{
+#      street
+#      postcode
+#      city
+#      country
+#    }
+#    coordinates{
+#      lat
+#      lng
+#    }
+#    approach{
+#      lat
+#      lng
+#    }
+#  }
+#  }
+#}
+#            '  - flow:
       - get:
-          url: '/graphql'
-          qs:
-            query: '%7BallStations%7Bname%7D%7D'
+          url: '/stations?lat=51.93726600000006&lng=13.76343400000003&radius=1000000'
