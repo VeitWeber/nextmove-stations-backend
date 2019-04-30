@@ -14,7 +14,7 @@ public class Chargepoint {
 	private String id;
 	private Boolean privateStation;
 	private Integer phases;
-	private Integer power;
+	private Double power;
 	private String type;
 	private String status;
 	private String problem;
@@ -41,11 +41,11 @@ public class Chargepoint {
 	}
 
 	@JsonPropertyDescription("Chargepoint power")
-	public Integer getPower() {
+	public Double getPower() {
 		return power;
 	}
 
-	@JsonPropertyDescription("Chargepoint type")
+	@JsonPropertyDescription("Chargepoint type (plug type id)")
 	public String getType() {
 		return type;
 	}
