@@ -189,7 +189,7 @@ public class StationRepository {
 				Document chargepointDoc = (Document) chargepoint;
 				chargepoints.add(new Chargepoint(
 						chargepointDoc.getString("id"),
-						chargepointDoc.getBoolean("private"),
+						chargepointDoc.getBoolean("restricted"),
 						chargepointDoc.getInteger("phases"),
 						chargepointDoc.get("power") == null ? null : Double.valueOf(chargepointDoc.get("power").toString()),
 						chargepointDoc.get("type") != null ? ((Document) chargepointDoc.get("type")).getObjectId("id").toString() : null,

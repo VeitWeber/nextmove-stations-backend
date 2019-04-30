@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @GraphQLType(name = "Chargepoint", description = "Chargepoint")
 public class Chargepoint {
 	private String id;
-	private Boolean privateStation;
+	private Boolean restricted;
 	private Integer phases;
 	private Double power;
 	private String type;
@@ -31,8 +31,8 @@ public class Chargepoint {
 	}
 
 	@JsonPropertyDescription("Private chargepoint indicator")
-	public Boolean isPrivate() {
-		return privateStation;
+	public Boolean isRestricted() {
+		return restricted;
 	}
 
 	@JsonPropertyDescription("Chargepoint phases")
