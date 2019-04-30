@@ -1,5 +1,6 @@
 package net.eclever.stations.backend.domain;
 
+import com.google.common.base.Strings;
 import com.google.common.base.Throwables;
 import com.google.gson.Gson;
 import com.mongodb.MongoClient;
@@ -190,14 +191,16 @@ public class StationRepository {
 						chargepointDoc.getString("id"),
 						chargepointDoc.getBoolean("private"),
 						chargepointDoc.getInteger("phases"),
-						chargepointDoc.getInteger("power"),
-						chargepointDoc.get("type") != null ? ((Document) chargepointDoc.get("type")).getString("id") : null,
+						chargepointDoc.get("power") == null ? null : Double.valueOf(chargepointDoc.get("power").toString()),
+						chargepointDoc.get("type") != null ? ((Document) chargepointDoc.get("type")).getObjectId("id").toString() : null,
 						chargepointDoc.getString("status"),
 						chargepointDoc.getString("problem"),
-						chargepointDoc.getDouble("ampere"),
-						chargepointDoc.getDouble("volt"),
+						chargepointDoc.get("ampere") == null ? null : Double.valueOf(chargepointDoc.get("ampere").toString()),
+						chargepointDoc.get("volt") == null ? null : Double.valueOf(chargepointDoc.get("volt").toString()),
 						chargepointDoc.getString("plugCable"),
-						chargepointDoc.getBoolean("pricingFree"), chargepointDoc.getString("pricingType"), chargepointDoc.getString("pricingValue")));
+						chargepointDoc.get("pricing") != null ? ((Document) chargepointDoc.get("pricing")).getBoolean("free") : null,
+						chargepointDoc.get("pricing") != null ? ((Document) chargepointDoc.get("pricing")).getString("type") : null,
+						chargepointDoc.get("pricing") != null ? ((Document) chargepointDoc.get("pricing")).getString("value") : null));
 			});
 
 			return new Station(
