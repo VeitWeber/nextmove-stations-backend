@@ -187,6 +187,10 @@ public class StationRepository {
 			ArrayList<Chargepoint> chargepoints = new ArrayList<>();
 			document.get("chargepoints", ArrayList.class).forEach(chargepoint -> {
 				Document chargepointDoc = (Document) chargepoint;
+				Pricing pricing = new Pricing(
+						chargepointDoc.get("pricing") != null ? ((Document) chargepointDoc.get("pricing")).getBoolean("free") : null,
+						chargepointDoc.get("pricing") != null ? ((Document) chargepointDoc.get("pricing")).getString("type") : null,
+						chargepointDoc.get("pricing") != null ? ((Document) chargepointDoc.get("pricing")).getString("value") : null);
 				chargepoints.add(new Chargepoint(
 						chargepointDoc.getString("id"),
 						chargepointDoc.getBoolean("restricted"),
@@ -198,11 +202,9 @@ public class StationRepository {
 						chargepointDoc.get("ampere") == null ? null : Double.valueOf(chargepointDoc.get("ampere").toString()),
 						chargepointDoc.get("volt") == null ? null : Double.valueOf(chargepointDoc.get("volt").toString()),
 						chargepointDoc.getString("plugCable"),
-						chargepointDoc.get("pricing") != null ? ((Document) chargepointDoc.get("pricing")).getBoolean("free") : null,
-						chargepointDoc.get("pricing") != null ? ((Document) chargepointDoc.get("pricing")).getString("type") : null,
-						chargepointDoc.get("pricing") != null ? ((Document) chargepointDoc.get("pricing")).getString("value") : null));
-			});
+						pricing));
 
+			});
 			return new Station(
 					document.get("_id").toString(),
 					document.getString("author"),
@@ -215,7 +217,20 @@ public class StationRepository {
 					document.get("editedat") != null ? document.getDate("editedat").getTime() : null,
 					document.getString("approachDescription"),
 					document.getString("manufacturer"),
-					document.get("chargepoints") != null ? chargepoints : null);
+					document.get("chargepoints") != null ? chargepoints : null,
+					document.getString("buildtype"),
+					document.getString("buildconfig"),
+					document.getString("network"),
+					document.getBoolean("restricted"),
+					document.get("rating") == null ? null : Double.valueOf(document.get("rating").toString()),
+					document.get("properties") != null ? ((Document) document.get("properties")).getBoolean("verified") : null,
+					document.get("properties") != null ? ((Document) document.get("properties")).getBoolean("barrierfree") : null,
+					document.get("properties") != null ? ((Document) document.get("properties")).getBoolean("freecharging") : null,
+					document.get("properties") != null ? ((Document) document.get("properties")).getBoolean("freeparking") : null,
+					document.get("properties") != null ? ((Document) document.get("properties")).getBoolean("predelete") : null,
+					document.get("properties") != null ? ((Document) document.get("properties")).getBoolean("pricingFree") : null
+
+			);
 		} catch (Exception ex) {
 			log.severe(Throwables.getStackTraceAsString(ex));
 		}

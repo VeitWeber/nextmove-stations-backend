@@ -1,6 +1,5 @@
 package net.eclever.stations.backend.domain;
 
-import com.google.gson.Gson;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 import com.mongodb.client.FindIterable;
