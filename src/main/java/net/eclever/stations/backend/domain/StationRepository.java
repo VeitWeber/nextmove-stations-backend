@@ -228,7 +228,10 @@ public class StationRepository {
 					document.get("properties") != null ? ((Document) document.get("properties")).getBoolean("freecharging") : null,
 					document.get("properties") != null ? ((Document) document.get("properties")).getBoolean("freeparking") : null,
 					document.get("properties") != null ? ((Document) document.get("properties")).getBoolean("predelete") : null,
-					document.get("properties") != null ? ((Document) document.get("properties")).getBoolean("pricingFree") : null
+					document.get("properties") != null ? ((Document) document.get("properties")).getBoolean("pricingFree") : null,
+					document.get("properties") != null ? ((Document) document.get("properties")).getBoolean("pricingContractfree") : null,
+					document.get("properties") != null ? ((Document) document.get("properties")).getBoolean("pricingBarrierfree") : null
+
 
 			);
 		} catch (Exception ex) {
