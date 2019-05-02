@@ -230,9 +230,9 @@ public class StationRepository {
 					document.get("properties") != null ? ((Document) document.get("properties")).getBoolean("predelete") : null,
 					document.get("properties") != null ? ((Document) document.get("properties")).getBoolean("pricingFree") : null,
 					document.get("properties") != null ? ((Document) document.get("properties")).getBoolean("pricingContractfree") : null,
-					document.get("properties") != null ? ((Document) document.get("properties")).getBoolean("pricingBarrierfree") : null
-
-
+					document.get("properties") != null ? ((Document) document.get("properties")).getBoolean("pricingBarrierfree") : null,
+					document.getInteger("parkingCapacity"),
+					document.getBoolean("parkingFree")
 			);
 		} catch (Exception ex) {
 			log.severe(Throwables.getStackTraceAsString(ex));

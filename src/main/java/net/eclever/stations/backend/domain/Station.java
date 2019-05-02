@@ -38,6 +38,8 @@ public class Station {
 	private Boolean pricingFree;
 	private Boolean pricingContractfree;
 	private Boolean pricingBarrierfree;
+	private Integer parkingCapacity;
+	private Boolean parkingFree;
 
 
 	@JsonPropertyDescription("Station ID")
@@ -160,5 +162,14 @@ public class Station {
 	@JsonPropertyDescription("If charging at this chargepoint is completely free and you don't need an accessmethod thing")
 	public Boolean getPricingBarrierfree() {
 		return pricingBarrierfree;
+	}
+
+	public Integer getParkingCapacity() {
+		return parkingCapacity;
+	}
+
+	@JsonPropertyDescription("If parking is for free with charging")
+	public Boolean getParkingFree() {
+		return parkingFree;
 	}
 }
