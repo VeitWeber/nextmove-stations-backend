@@ -25,6 +25,20 @@ public class Station {
 	private String approachDescription;
 	private String manufacturer;
 	private ArrayList<Chargepoint> chargepoints;
+	private String buildType;
+	private String buildConfig;
+	private String network;
+	private Boolean restricted;
+	private Double rating;
+	private Boolean verified;
+	private Boolean barrierFree;
+	private Boolean freecharging;
+	private Boolean freeparking;
+	private Boolean predelete;
+	private Boolean pricingFree;
+	private Boolean pricingContractFree;
+	private Boolean pricingBarrierFree;
+	
 
 
 	@JsonPropertyDescription("Station ID")
@@ -80,5 +94,62 @@ public class Station {
 	@JsonPropertyDescription("Station manufacturer")
 	public String getManufacturer() {
 		return manufacturer;
+	}
+
+	public ArrayList<Chargepoint> getChargepoints() {
+		return chargepoints;
+	}
+
+	public String getBuildType() {
+		return buildType;
+	}
+
+	public String getBuildConfig() {
+		return buildConfig;
+	}
+
+	public String getNetwork() {
+		return network;
+	}
+
+	public boolean isRestricted() {
+		return restricted;
+	}
+
+	public Double getRating() {
+		return rating;
+	}
+
+	public Boolean getRestricted() {
+		return restricted;
+	}
+
+	public Boolean getVerified() {
+		return verified;
+	}
+
+	@JsonPropertyDescription("\"Rollstuhlgerrecht\"")
+	public Boolean getBarrierFree() {
+		return barrierFree;
+	}
+
+	@JsonPropertyDescription("DEPRECATED in favor of \"pricingFree\"")
+	public Boolean getFreecharging() {
+		return freecharging;
+	}
+
+	@JsonPropertyDescription("DEPRECATED in favor of \"parkingFree\"")
+	public Boolean getFreeparking() {
+		return freeparking;
+	}
+
+	@JsonPropertyDescription("Set to true if DELETE was called on this station")
+	public Boolean getPredelete() {
+		return predelete;
+	}
+
+	@JsonPropertyDescription("If charging at this chargepoint is completely free, but you need an accessmethod thing")
+	public Boolean getPricingFree() {
+		return pricingFree;
 	}
 }

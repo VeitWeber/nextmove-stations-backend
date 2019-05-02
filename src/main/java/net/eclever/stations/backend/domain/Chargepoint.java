@@ -21,9 +21,8 @@ public class Chargepoint {
 	private Double ampere;
 	private Double volt;
 	private String plugCable;
-	private Boolean pricingFree;
-	private String pricingType;
-	private String pricingValue;
+	private Pricing pricing;
+
 
 	@JsonPropertyDescription("Chargepoint ID")
 	public String getId() {
@@ -75,18 +74,9 @@ public class Chargepoint {
 		return plugCable;
 	}
 
-	@JsonPropertyDescription("If charging at this chargepoint is completely free")
-	public Boolean getPricingFree() {
-		return pricingFree;
+	@JsonPropertyDescription("Pricing infos")
+	public Pricing getPricing() {
+		return pricing;
 	}
 
-	@JsonPropertyDescription("Pricing type")
-	public String getPricingType() {
-		return pricingType;
-	}
-
-	@JsonPropertyDescription("Actual priceage value")
-	public String getPricingValue() {
-		return pricingValue;
-	}
 }
