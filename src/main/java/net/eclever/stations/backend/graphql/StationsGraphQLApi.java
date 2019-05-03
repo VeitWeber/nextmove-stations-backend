@@ -260,10 +260,10 @@ public class StationsGraphQLApi {
 			@GraphQLArgument(name = "bBox_ne_longitude", description = "Bounding box north east longitude.") Double boundingBoxNeLongitude,
 			@GraphQLArgument(name = "bBox_sw_latitude", description = "Bounding box south west latitude.") Double boundingBoxSwLatitude,
 			@GraphQLArgument(name = "bBox_sw_longitude", description = "Bounding box south west longitude.") Double boundingBoxSwLongitude,
-			@GraphQLArgument(name = "first", description = "First element") int first,
-			@GraphQLArgument(name = "offset", description = "Offset") int offset) {
+			@GraphQLArgument(name = "first", description = "First element") Optional<Integer> first,
+			@GraphQLArgument(name = "offset", description = "Offset") Optional<Integer> offset) {
 		try {
-			Station[] stationsNearby = stationRepository.getAllStationsNearby(boundingBoxNeLatitude, boundingBoxNeLongitude, boundingBoxSwLatitude, boundingBoxSwLongitude, first, offset);
+			Station[] stationsNearby = stationRepository.getAllStationsNearby(boundingBoxNeLatitude, boundingBoxNeLongitude, boundingBoxSwLatitude, boundingBoxSwLongitude, first.get(), offset.get());
 			return new StationData(stationsNearby.length, stationsNearby);
 		} catch (Exception ex) {
 			log.severe(Throwables.getStackTraceAsString(Throwables.getRootCause(ex)));
@@ -275,6 +275,26 @@ public class StationsGraphQLApi {
 		}
 	}
 
+
+	@GraphQLQuery(name = "stationsNearby", description = "Get stations between bounding box coordinates or by radius.")
+	public StationData getAllStationsNearby(
+			@GraphQLArgument(name = "latitude", description = "Latitude") Double latitude,
+			@GraphQLArgument(name = "longitude", description = "Longitude") Double longitude,
+			@GraphQLArgument(name = "radius", description = "Radius in kilometers") Double radius,
+			@GraphQLArgument(name = "first", description = "First element") Optional<Integer> first,
+			@GraphQLArgument(name = "offset", description = "Offset") Optional<Integer> offset) {
+		try {
+			Station[] stationsNearby = stationRepository.getAllStationsNearby(latitude, longitude, radius, first.get(), offset.get());
+			return new StationData(stationsNearby.length, stationsNearby);
+		} catch (Exception ex) {
+			log.severe(Throwables.getStackTraceAsString(Throwables.getRootCause(ex)));
+
+			if (ex instanceof IllegalArgumentException)
+				throw ex;
+
+			throw new IllegalStateException();
+		}
+	}
 
 	@GraphQLQuery(name = "stationsNearby", description = "Get stations between bounding box coordinates or by radius.")
 	public StationData getAllStationsNearby(
@@ -283,26 +303,6 @@ public class StationsGraphQLApi {
 			@GraphQLArgument(name = "radius", description = "Radius in kilometers") Double radius) {
 		try {
 			Station[] stationsNearby = stationRepository.getAllStationsNearby(latitude, longitude, radius, null, null);
-			return new StationData(stationsNearby.length, stationsNearby);
-		} catch (Exception ex) {
-			log.severe(Throwables.getStackTraceAsString(Throwables.getRootCause(ex)));
-
-			if (ex instanceof IllegalArgumentException)
-				throw ex;
-
-			throw new IllegalStateException();
-		}
-	}
-
-	@GraphQLQuery(name = "stationsNearby", description = "Get stations between bounding box coordinates or by radius.")
-	public StationData getAllStationsNearby(
-			@GraphQLArgument(name = "latitude", description = "Latitude") Double latitude,
-			@GraphQLArgument(name = "longitude", description = "Longitude") Double longitude,
-			@GraphQLArgument(name = "radius", description = "Radius in kilometers") Double radius,
-			@GraphQLArgument(name = "first", description = "First element") int first,
-			@GraphQLArgument(name = "offset", description = "Offset") int offset) {
-		try {
-			Station[] stationsNearby = stationRepository.getAllStationsNearby(latitude, longitude, radius, first, offset);
 			return new StationData(stationsNearby.length, stationsNearby);
 		} catch (Exception ex) {
 			log.severe(Throwables.getStackTraceAsString(Throwables.getRootCause(ex)));
