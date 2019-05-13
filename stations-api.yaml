@@ -1,0 +1,73 @@
+# StatefulSet for stations application.
+# A stateful set is recommended by Hazelcast.
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: stations
+spec:
+  replicas: 2
+  serviceName: stations
+  selector:
+    matchLabels:
+      app: stations
+  template:
+    metadata:
+      labels:
+        app: stations
+        clusterMember: payara
+    spec:
+      containers:
+        - name: stations
+          image: 100.125.7.25:20202/eclever/stations-api:dev-2019-05-12
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: STATION_MONGODB_URI
+              valueFrom:
+                secretKeyRef:
+                  name: eclever-mongodb-stations
+                  key: uri
+            - name: STATION_ENV
+              value: dev
+      imagePullSecrets:
+        - name: default-secret
+---
+# Service for the stations StatefulSet
+apiVersion: v1
+kind: Service
+metadata:
+  name: stations
+spec:
+  type: NodePort
+  selector:
+    app: stations
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+---
+# Ingress for stations
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: stations
+  annotations:
+    kubernetes.io/elb.ip: 80.158.17.4
+    kubernetes.io/elb.port: '443'
+spec:
+  tls:
+    - secretName: cert-dev.eclever.net
+  rules:
+    - http:
+        paths:
+        - backend:
+            serviceName: stations
+            servicePort: 8080
+          property:
+            # Mode for matching URL to the corresponding service.
+            # The following modes are available:
+            # EQUAL_TO - exact matching
+            # STARTS_WITH - prefix matching
+            # REGEX - regular expression
+            ingress.beta.kubernetes.io/url-match-mode: STARTS_WITH
+          path: /stations-api
