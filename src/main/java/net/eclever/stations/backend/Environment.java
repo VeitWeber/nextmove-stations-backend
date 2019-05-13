@@ -5,8 +5,7 @@ package net.eclever.stations.backend;
  */
 public interface Environment {
 	interface MongoDbProperties {
-//		String DB_NAME = "heroku_w8s6lzwm";
-		String DB_NAME = "eclever";
+		String DB_NAME = System.getenv("STATION_MONGODB_URI");
 		String COLLECTION_NAME = "stations";
 	}
 }
