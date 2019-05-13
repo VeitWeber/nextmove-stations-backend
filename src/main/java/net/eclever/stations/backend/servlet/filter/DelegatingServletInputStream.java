@@ -1,4 +1,4 @@
-package net.eclever.stations.backend.rest.filter;
+package net.eclever.stations.backend.servlet.filter;
 
 import javax.servlet.ReadListener;
 import javax.servlet.ServletInputStream;

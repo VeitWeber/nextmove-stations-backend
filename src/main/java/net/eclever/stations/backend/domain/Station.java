@@ -113,7 +113,7 @@ public class Station {
 		return network;
 	}
 
-	public boolean isRestricted() {
+	public Boolean isRestricted() {
 		return restricted;
 	}
 

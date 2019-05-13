@@ -1,6 +1,5 @@
 package net.eclever.stations.backend.domain;
 
-import com.google.common.base.Strings;
 import com.google.common.base.Throwables;
 import com.google.gson.Gson;
 import com.mongodb.MongoClient;
