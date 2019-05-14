@@ -26,6 +26,8 @@ spec:
                 secretKeyRef:
                   name: eclever-mongodb-stations
                   key: uri
+            - name: STATION_MONGODB_NAME
+              value: eclever
             - name: STATION_ENV
               value: dev
       imagePullSecrets:
