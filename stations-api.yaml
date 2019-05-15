@@ -1,3 +1,13 @@
+---
+# PostgreSQL nextmove user
+apiVersion: v1
+kind: Secret
+metadata:
+  name: stations-postgresql
+data:
+  user: c3RhdGlvbnMtYXBp
+  pass: Wmo5WGtMTXU4QkNKMz5zSzdXR1lxaERWKWpyWGI4bSs=
+---
 # StatefulSet for stations application.
 # A stateful set is recommended by Hazelcast.
 apiVersion: apps/v1
@@ -21,6 +31,22 @@ spec:
           image: 100.125.7.25:20202/eclever/stations-api:dev-2019-05-12
           imagePullPolicy: IfNotPresent
           env:
+            - name: STATION_POSTGRES_HOST
+              value: postgresql.default.svc.cluster.local
+            - name: STATION_POSTGRES_PORT
+              value: '5432'
+            - name: STATION_POSTGRES_DB
+              value: postgres
+            - name: STATION_POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: stations-postgresql
+                  key: user
+            - name: STATION_POSTGRES_PW
+              valueFrom:
+                secretKeyRef:
+                  name: stations-postgresql
+                  key: pass
             - name: STATION_MONGODB_URI
               valueFrom:
                 secretKeyRef:
