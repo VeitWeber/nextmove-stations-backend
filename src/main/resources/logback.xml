@@ -9,27 +9,31 @@
     </appender>
 
     <!--<appender name="GELF" class="de.siegmar.logbackgelf.GelfUdpAppender">-->
-        <!--<graylogHost>pikodat.com</graylogHost>-->
-        <!--<graylogPort>12201</graylogPort>-->
-        <!--<layout class="de.siegmar.logbackgelf.GelfLayout">-->
-            <!--<includeRawMessage>false</includeRawMessage>-->
-            <!--<includeMarker>true</includeMarker>-->
-            <!--<includeMdcData>true</includeMdcData>-->
-            <!--<includeCallerData>true</includeCallerData>-->
-            <!--<includeLevelName>true</includeLevelName>-->
-            <!--<shortPatternLayout class="ch.qos.logback.classic.PatternLayout">-->
-                <!--<pattern>%m%nopex</pattern>-->
-            <!--</shortPatternLayout>-->
-            <!--<fullPatternLayout class="ch.qos.logback.classic.PatternLayout">-->
-                <!--<pattern>%m</pattern>-->
-            <!--</fullPatternLayout>-->
-            <!--<staticField>app_name:nextmove.backend_dev</staticField>-->
-        <!--</layout>-->
+    <!--<graylogHost>pikodat.com</graylogHost>-->
+    <!--<graylogPort>12201</graylogPort>-->
+    <!--<layout class="de.siegmar.logbackgelf.GelfLayout">-->
+    <!--<includeRawMessage>false</includeRawMessage>-->
+    <!--<includeMarker>true</includeMarker>-->
+    <!--<includeMdcData>true</includeMdcData>-->
+    <!--<includeCallerData>true</includeCallerData>-->
+    <!--<includeLevelName>true</includeLevelName>-->
+    <!--<shortPatternLayout class="ch.qos.logback.classic.PatternLayout">-->
+    <!--<pattern>%m%nopex</pattern>-->
+    <!--</shortPatternLayout>-->
+    <!--<fullPatternLayout class="ch.qos.logback.classic.PatternLayout">-->
+    <!--<pattern>%m</pattern>-->
+    <!--</fullPatternLayout>-->
+    <!--<staticField>app_name:nextmove.backend_dev</staticField>-->
+    <!--</layout>-->
     <!--</appender>-->
 
+
+    <logger name="org.mongodb" level="WARN"/>
+    <logger name="io.swagger" level="WARN"/>
+
     <root level="debug">
-        <!--<appender-ref ref="STDOUT"/>-->
-        <appender-ref ref="GELF"/>
+        <appender-ref ref="STDOUT"/>
+        <!--        <appender-ref ref="GELF"/>-->
     </root>
 
 </configuration>

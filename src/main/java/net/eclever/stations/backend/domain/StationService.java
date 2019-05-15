@@ -19,9 +19,6 @@ import java.util.function.Consumer;
 
 import static com.mongodb.client.model.Sorts.ascending;
 
-/**
- * @author Veit Weber, , $(DATE)
- */
 @Startup
 @Singleton
 @Log
@@ -41,7 +38,7 @@ public class StationService {
 		try {
 			log.info("[+] Get Stations");
 
-			MongoClientURI uri = new MongoClientURI(System.getenv("STATION_MONGODB_URI"));
+			MongoClientURI uri = new MongoClientURI(Environment.MongoDbProperties.DB_URI);
 			MongoClient mongoClient = new MongoClient(uri);
 
 			MongoDatabase mongoDatabase = mongoClient.getDatabase(Environment.MongoDbProperties.DB_NAME);

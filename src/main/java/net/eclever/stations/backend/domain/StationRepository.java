@@ -35,7 +35,7 @@ public class StationRepository {
 	public Station[] getStationsSinceLastUpdate(Date lastUpdate) {
 		LinkedList<Station> cachedStationList = new LinkedList<>();
 		try {
-			MongoClientURI uri = new MongoClientURI(System.getenv("STATION_MONGODB_URI"));
+			MongoClientURI uri = new MongoClientURI(Environment.MongoDbProperties.DB_URI);
 			MongoClient mongoClient = new MongoClient(uri);
 
 			MongoDatabase mongoDatabase = mongoClient.getDatabase(Environment.MongoDbProperties.DB_NAME);
@@ -69,7 +69,7 @@ public class StationRepository {
 	                                      Integer offset) {
 		LinkedList<Station> cachedStationList = new LinkedList<>();
 		try {
-			MongoClientURI uri = new MongoClientURI(System.getenv("STATION_MONGODB_URI"));
+			MongoClientURI uri = new MongoClientURI(Environment.MongoDbProperties.DB_URI);
 			MongoClient mongoClient = new MongoClient(uri);
 
 			MongoDatabase mongoDatabase = mongoClient.getDatabase(Environment.MongoDbProperties.DB_NAME);
@@ -130,7 +130,7 @@ public class StationRepository {
 		try {
 			Gson gson = new Gson();
 
-			MongoClientURI uri = new MongoClientURI(System.getenv("STATION_MONGODB_URI"));
+			MongoClientURI uri = new MongoClientURI(Environment.MongoDbProperties.DB_URI);
 			MongoClient mongoClient = new MongoClient(uri);
 
 			MongoDatabase mongoDatabase = mongoClient.getDatabase(Environment.MongoDbProperties.DB_NAME);
