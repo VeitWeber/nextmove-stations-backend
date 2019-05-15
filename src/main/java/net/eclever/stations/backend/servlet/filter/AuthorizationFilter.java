@@ -33,6 +33,7 @@ public class AuthorizationFilter implements Filter {
 	                     FilterChain chain) throws IOException, ServletException {
 		MultiReadHttpServletRequestWrapper multiReadRequest = new MultiReadHttpServletRequestWrapper((HttpServletRequest) request);
 		HttpServletResponse servletResponse = (HttpServletResponse) response;
+		HttpServletRequest servletRequest = (HttpServletRequest) request;
 		GraphQLOperation graphQLOperation = multiReadRequest.getGraphQLOperation();
 
 		servletResponse.setHeader("Access-Control-Allow-Origin", "*");
@@ -42,12 +43,13 @@ public class AuthorizationFilter implements Filter {
 			servletResponse.sendError(HttpServletResponse.SC_BAD_REQUEST);
 			return;
 		} else {
-			if (!(graphQLOperation.equals(GraphQLOperation.QUERY_INTROSPECTION) || graphQLOperation.equals(GraphQLOperation.QUERY_ALL_STATIONS) || graphQLOperation.equals(GraphQLOperation.QUERY_ALL_STATIONS_NEARBY) || graphQLOperation.equals(GraphQLOperation.QUERY_STATION))) {
+			String origin = servletRequest.getHeader("Origin");
 				String authorizationHeader = ((HttpServletRequest) request).getHeader(HttpHeaders.AUTHORIZATION);
 				if (Strings.isNullOrEmpty(authorizationHeader)) {
 					servletResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, "No token in authorization header provided.");
 					return;
 				}
+			boolean originValid = this.checkOrigin(origin);
 
 				try {
 					String[] tokenBuffer = authorizationHeader.split("#\\|#");
@@ -91,6 +93,8 @@ public class AuthorizationFilter implements Filter {
 			}
 		}
 		chain.doFilter(multiReadRequest, response);
+	private boolean checkOrigin(String origin) {
+		return (Origins.getSafeOrigins().contains(origin));
 	}
 
 	@Override
