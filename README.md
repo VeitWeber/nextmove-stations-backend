@@ -4,10 +4,15 @@
 
 ### Environment Variables
 
-| Variable               | Description                         |
-|:-----------------------|:------------------------------------|
-| `STATION_MONGODB_URI`  | MongoDB connection URI              |
-| `STATION_MONGODB_NAME` | Name of the MongoDB database to use |
+| Variable                | Description                                    |
+|:------------------------|:-----------------------------------------------|
+| `STATION_POSTGRES_HOST` | PostgreSQL hostname                            |
+| `STATION_POSTGRES_PORT` | PostgreSQL Port (currently unused)             |
+| `STATION_POSTGRES_DB`   | PostgreSQL database to use                     |
+| `STATION_POSTGRES_USER` | PostgreSQL user for authentication             |
+| `STATION_POSTGRES_PW`   | Corresponding password for the PostgreSQL user |
+| `STATION_MONGODB_URI`   | MongoDB connection URI                         |
+| `STATION_MONGODB_NAME`  | Name of the MongoDB database to use            |
 
 ## Usage
 
