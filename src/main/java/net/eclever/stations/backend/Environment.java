@@ -10,4 +10,8 @@ public interface Environment {
 	interface UserAgents {
 		String IOS_V_1_0 = "eclever/1.0";
 }
+
+	interface Platform {
+		String IOS = "aW9zX3N0YXRpb25zXzc3NjVmZjFjLWE2OWMtNDE3Zi1iMjI0LTUyMjhlOWY0OGY4NA==";
+}
 }

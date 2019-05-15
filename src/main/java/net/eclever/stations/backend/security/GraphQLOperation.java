@@ -4,7 +4,7 @@ public enum GraphQLOperation {
 	OPEN_QUERY_INTROSPECTION("__schema"),
 	OPEN_QUERY_ALL_STATIONS("stations"),
 	OPEN_QUERY_ALL_STATIONS_NEARBY("stationsNearby"),
-	RESTRICTED_QUERY_STATION("station");
+	OPEN_QUERY_STATION("station");
 
 
 	private String text;
