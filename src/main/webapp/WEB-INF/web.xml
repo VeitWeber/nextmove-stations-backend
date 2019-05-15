@@ -3,4 +3,34 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          version="3.1">
+
+    <data-source>
+        <name>java:global/StationsPostgresDatasource</name>
+        <class-name>org.postgresql.ds.PGSimpleDataSource</class-name>
+        <server-name>${ENV=NEXTMOVE_POSTGRES_HOST}</server-name>
+        <port-number>5432</port-number>
+        <database-name>${ENV=NEXTMOVE_POSTGRES_DB}</database-name>
+        <user>${ENV=NEXTMOVE_POSTGRES_USER}</user>
+        <password>${ENV=NEXTMOVE_POSTGRES_PW}</password>
+        <property>
+            <name>fish.payara.slow-query-threshold-in-seconds</name>
+            <value>5</value>
+        </property>
+        <property>
+            <name>fish.payara.log-jdbc-calls</name>
+            <value>false</value>
+        </property>
+        <property>
+            <name>fish.payara.is-connection-validation-required</name>
+            <value>true</value>
+        </property>
+        <property>
+            <name>fish.payara.connection-validation-method</name>
+            <value>custom-validation</value>
+        </property>
+        <property>
+            <name>fish.payara.validation-classname</name>
+            <value>org.glassfish.api.jdbc.validation.PostgresConnectionValidation</value>
+        </property>
+    </data-source>
 </web-app>
