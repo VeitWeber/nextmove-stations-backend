@@ -44,9 +44,12 @@ public class AuthorizationFilter implements Filter {
 			return;
 		} else {
 			String origin = servletRequest.getHeader("Origin");
-				String authorizationHeader = ((HttpServletRequest) request).getHeader(HttpHeaders.AUTHORIZATION);
+			String userAgent = servletRequest.getHeader(HttpHeaders.USER_AGENT);
 				if (Strings.isNullOrEmpty(authorizationHeader)) {
 					servletResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, "No token in authorization header provided.");
+			boolean originValid = this.checkOrigin(origin);
+			if (!originValid && !this.checkUserAgent(userAgent)) {
+				servletResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Err_1: Your client is not authorized for this operation.");
 					return;
 				}
 			boolean originValid = this.checkOrigin(origin);
@@ -93,6 +96,16 @@ public class AuthorizationFilter implements Filter {
 			}
 		}
 		chain.doFilter(multiReadRequest, response);
+	private boolean checkUserAgent(String userAgent) {
+		if (userAgent.startsWith(Environment.UserAgents.IOS_V_1_0) && userAgent.contains("iOS"))
+			return true;
+		//todo remove, for testing purposes only
+		if (userAgent.startsWith("Mozilla") && userAgent.contains("Safari"))
+			return true;
+		return false;
+	}
+
+
 	private boolean checkOrigin(String origin) {
 		return (Origins.getSafeOrigins().contains(origin));
 	}
