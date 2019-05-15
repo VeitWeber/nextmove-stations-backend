@@ -7,11 +7,11 @@
     <data-source>
         <name>java:global/StationsPostgresDatasource</name>
         <class-name>org.postgresql.ds.PGSimpleDataSource</class-name>
-        <server-name>${ENV=NEXTMOVE_POSTGRES_HOST}</server-name>
+        <server-name>${ENV=STATION_POSTGRES_HOST}</server-name>
         <port-number>5432</port-number>
-        <database-name>${ENV=NEXTMOVE_POSTGRES_DB}</database-name>
-        <user>${ENV=NEXTMOVE_POSTGRES_USER}</user>
-        <password>${ENV=NEXTMOVE_POSTGRES_PW}</password>
+        <database-name>${ENV=STATION_POSTGRES_DB}</database-name>
+        <user>${ENV=STATION_POSTGRES_USER}</user>
+        <password>${ENV=STATION_POSTGRES_PW}</password>
         <property>
             <name>fish.payara.slow-query-threshold-in-seconds</name>
             <value>5</value>
