@@ -1,10 +1,10 @@
 package net.eclever.stations.backend.security;
 
 public enum GraphQLOperation {
-	QUERY_INTROSPECTION("__schema"),
-	QUERY_ALL_STATIONS("stations"),
-	QUERY_ALL_STATIONS_NEARBY("stationsNearby"),
-	QUERY_STATION("station");
+	OPEN_QUERY_INTROSPECTION("__schema"),
+	OPEN_QUERY_ALL_STATIONS("stations"),
+	OPEN_QUERY_ALL_STATIONS_NEARBY("stationsNearby"),
+	RESTRICTED_QUERY_STATION("station");
 
 
 	private String text;
