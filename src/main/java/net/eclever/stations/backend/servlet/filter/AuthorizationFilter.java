@@ -55,6 +55,11 @@ public class AuthorizationFilter implements Filter {
 			servletResponse.sendError(HttpServletResponse.SC_BAD_REQUEST);
 			return;
 		} else {
+			if (graphQLOperation == GraphQLOperation.OPEN_QUERY_INTROSPECTION) {
+				chain.doFilter(multiReadRequest, response);
+				return;
+			}
+
 			String origin = servletRequest.getHeader("Origin");
 			String userAgent = servletRequest.getHeader(HttpHeaders.USER_AGENT);
 			String authHeader = servletRequest.getHeader(HttpHeaders.AUTHORIZATION);
