@@ -1,9 +1,13 @@
 package net.eclever.stations.backend;
 
+import com.google.common.base.Strings;
+
 public interface Environment {
-	public static final boolean IS_LOCAL = System.getenv("NEXTMOVE_ENV").equals("local");
-	public static final boolean IS_DEV = System.getenv("NEXTMOVE_ENV").equals("dev");
-	public static final boolean IS_PROD = System.getenv("NEXTMOVE_ENV").equals("prod");
+
+	String ENV = System.getenv("STATION_ENV");
+	boolean IS_LOCAL = !Strings.isNullOrEmpty(ENV) && ENV.equals("local");
+	boolean IS_DEV = !Strings.isNullOrEmpty(ENV) && ENV.equals("dev");
+	boolean IS_PROD = !Strings.isNullOrEmpty(ENV) && ENV.equals("prod");
 
 	interface MongoDbProperties {
 		String DB_URI = System.getenv("STATION_MONGODB_URI");
@@ -11,7 +15,7 @@ public interface Environment {
 		String COLLECTION_NAME = "stations";
 	}
 
-	public interface DbProperties {
+	interface DbProperties {
 		String DEFAULT_PERSISTENCE_CONTEXT_NAME = "stationPU";
 		String SCHEMA = "nextmove";
 		String CATALOG = "postgres";
