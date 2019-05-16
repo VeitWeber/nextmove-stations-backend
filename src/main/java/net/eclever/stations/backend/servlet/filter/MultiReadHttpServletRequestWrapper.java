@@ -1,5 +1,6 @@
 package net.eclever.stations.backend.servlet.filter;
 
+import com.google.common.base.Strings;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import graphql.language.Field;
@@ -27,16 +28,25 @@ public class MultiReadHttpServletRequestWrapper extends HttpServletRequestWrappe
 		try {
 			body = IOUtils.toByteArray(request.getInputStream());
 			JsonObject body = new Gson().fromJson(new String(this.body), JsonObject.class);
-			String bodyString = (body.getAsJsonPrimitive("query").toString());
-			bodyString = bodyString.substring(1, bodyString.length() - 1).replace("\\n", "");
+			String bodyString;
 
-			Parser parser = new Parser();
-			OperationDefinition operationDefinition = (OperationDefinition) parser.parseDocument(bodyString).getDefinitions().get(0);
-			if (operationDefinition.getOperation().equals(OperationDefinition.Operation.QUERY) || operationDefinition.equals(OperationDefinition.Operation.MUTATION)) {
-				List<Selection> selectionsList = operationDefinition.getSelectionSet().getSelections();
-				if (selectionsList.size() == 1) {
-					String operationName = ((Field) selectionsList.get(0)).getName();
-					this.graphQLOperation = GraphQLOperation.fromString(operationName);
+			try {
+				bodyString = body.getAsJsonPrimitive("query").toString();
+			} catch (Exception ex) {
+				bodyString = "";
+			}
+
+			if (!Strings.isNullOrEmpty(bodyString) && bodyString.length() > 5) {
+				bodyString = bodyString.substring(1, bodyString.length() - 1).replace("\\n", "");
+
+				Parser parser = new Parser();
+				OperationDefinition operationDefinition = (OperationDefinition) parser.parseDocument(bodyString).getDefinitions().get(0);
+				if (operationDefinition.getOperation().equals(OperationDefinition.Operation.QUERY) || operationDefinition.equals(OperationDefinition.Operation.MUTATION)) {
+					List<Selection> selectionsList = operationDefinition.getSelectionSet().getSelections();
+					if (selectionsList.size() == 1) {
+						String operationName = ((Field) selectionsList.get(0)).getName();
+						this.graphQLOperation = GraphQLOperation.fromString(operationName);
+					}
 				}
 			}
 		} catch (IOException ex) {

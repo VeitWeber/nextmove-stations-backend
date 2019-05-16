@@ -42,9 +42,9 @@ public class AuthorizationFilter implements Filter {
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response,
 	                     FilterChain chain) throws IOException, ServletException {
-		MultiReadHttpServletRequestWrapper multiReadRequest = new MultiReadHttpServletRequestWrapper((HttpServletRequest) request);
 		HttpServletResponse servletResponse = (HttpServletResponse) response;
 		HttpServletRequest servletRequest = (HttpServletRequest) request;
+		MultiReadHttpServletRequestWrapper multiReadRequest = new MultiReadHttpServletRequestWrapper((HttpServletRequest) request);
 		GraphQLOperation graphQLOperation = multiReadRequest.getGraphQLOperation();
 
 		servletResponse.setHeader("Access-Control-Allow-Origin", "*");
