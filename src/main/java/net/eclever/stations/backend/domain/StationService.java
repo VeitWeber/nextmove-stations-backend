@@ -37,7 +37,6 @@ public class StationService {
 		LinkedList<Station> cachedStationList = new LinkedList<>();
 		try {
 			log.info("[+] Get Stations");
-
 			MongoClientURI uri = new MongoClientURI(Environment.MongoDbProperties.DB_URI);
 			MongoClient mongoClient = new MongoClient(uri);
 
@@ -46,11 +45,8 @@ public class StationService {
 
 			FindIterable mongoCollection = collection
 					.find()
-					.limit(20)
+//					.limit(200)
 					.sort(ascending("name"));
-
-
-//			}
 
 			mongoCollection.forEach((Consumer<Document>) document -> {
 				Station station = StationRepository.createStationFromDoc(document);
