@@ -154,7 +154,7 @@ public class AuthorizationFilter implements Filter {
 		if (userAgent.startsWith(Environment.UserAgents.IOS_V_1_0) && userAgent.contains("iOS"))
 			return true;
 		//enable altair for local testing
-		if (Environment.IS_DEV)
+		if (Environment.IS_LOCAL)
 			if (userAgent.startsWith("Mozilla") && userAgent.contains("Safari"))
 				return true;
 
