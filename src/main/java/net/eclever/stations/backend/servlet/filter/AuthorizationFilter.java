@@ -120,6 +120,7 @@ public class AuthorizationFilter implements Filter {
 					if (authHeader.startsWith("$2") && authHeader.length() > 5) {
 						try {
 							boolean validToken = this.checkCleverToken(authHeader.substring(2));
+							//todo check token & useragent matching
 
 							if (!validToken) {
 								servletResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Err_1: Token is not valid.");
@@ -152,9 +153,11 @@ public class AuthorizationFilter implements Filter {
 	private boolean checkUserAgent(String userAgent) {
 		if (userAgent.startsWith(Environment.UserAgents.IOS_V_1_0) && userAgent.contains("iOS"))
 			return true;
-		//todo remove, for testing purposes only
-		if (userAgent.startsWith("Mozilla") && userAgent.contains("Safari"))
-			return true;
+		//enable altair for local testing
+		if (Environment.IS_DEV)
+			if (userAgent.startsWith("Mozilla") && userAgent.contains("Safari"))
+				return true;
+
 		return false;
 	}
 

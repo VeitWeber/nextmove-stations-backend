@@ -10,6 +10,7 @@
             <property name="eclipselink.cache.coordination.protocol"
                       value="fish.payara.persistence.eclipselink.cache.coordination.HazelcastPublishingTransportManager"/>
             <property name="eclipselink.cache.coordination.channel" value="PostgresPUChannelStations"/>
+
             <!--<property name="eclipselink.profiler" value="PerformanceMonitor"/>-->
             <!--<property name="eclipselink.ddl-generation" value="drop-and-create-tables"/>  -->
             <!--<property name="eclipselink.logging.level" value="FINEST"/>-->
