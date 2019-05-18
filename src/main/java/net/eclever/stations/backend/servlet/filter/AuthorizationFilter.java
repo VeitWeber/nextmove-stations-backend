@@ -124,7 +124,7 @@ public class AuthorizationFilter implements Filter {
 				} else {
 					if (authHeader.startsWith("$2") && authHeader.length() > 5) {
 						try {
-							boolean validToken = this.checkCleverToken(authHeader.substring(2));
+							boolean validToken = this.checkCleverToken(authHeader.substring(2), userAgent);
 							//todo check token & useragent matching
 
 							if (!validToken) {
@@ -158,10 +158,13 @@ public class AuthorizationFilter implements Filter {
 	private boolean checkUserAgent(String userAgent) {
 		if (userAgent.startsWith(Environment.UserAgents.IOS_V_1_0) && userAgent.contains("iOS"))
 			return true;
+
+		if (userAgent.startsWith(Environment.UserAgents.ANDROID_V_2_1_0) && userAgent.contains("Android"))
+			return true;
+
 		//enable altair for local testing
 		if (Environment.IS_LOCAL)
-			if (userAgent.startsWith("Mozilla") && userAgent.contains("Safari"))
-				return true;
+			return userAgent.startsWith("Mozilla") && userAgent.contains("Safari");
 
 		return false;
 	}
@@ -170,7 +173,7 @@ public class AuthorizationFilter implements Filter {
 		return (Origins.getSafeOrigins().contains(origin));
 	}
 
-	private boolean checkCleverToken(String encryptedText) throws IOException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException {
+	private boolean checkCleverToken(String encryptedText, String userAgent) throws IOException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException {
 		String localDateString = LocalDate.now().toString();
 		SecretKeySpec secretKeySpec = new SecretKeySpec(localDateString.getBytes(), "Blowfish");
 		Cipher cipher = Cipher.getInstance("Blowfish");
@@ -178,7 +181,15 @@ public class AuthorizationFilter implements Filter {
 		cipher.init(Cipher.DECRYPT_MODE, secretKeySpec);
 		String value = new String(cipher.doFinal(new BASE64Decoder().decodeBuffer(encryptedText)));
 
-		return value.equals(new String(Base64.getDecoder().decode(Environment.Platform.IOS)));
+		if (value.equals(new String(Base64.getDecoder().decode(Environment.Platform.IOS)))) {
+			return userAgent.startsWith(Environment.UserAgents.IOS_V_1_0) && userAgent.contains("iOS");
+		}
+
+		if (value.equals(new String(Base64.getDecoder().decode(Environment.Platform.ANDROID)))) {
+			return userAgent.startsWith(Environment.UserAgents.ANDROID_V_2_1_0) && userAgent.contains("Android");
+		}
+
+		return false;
 	}
 
 	@Override

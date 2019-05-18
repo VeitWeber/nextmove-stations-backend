@@ -25,9 +25,11 @@ public interface Environment {
 
 	interface UserAgents {
 		String IOS_V_1_0 = "eclever/1.0";
+		String ANDROID_V_2_1_0 = "Dalvik/2.1.0";
 	}
 
 	interface Platform {
 		String IOS = "aW9zX3N0YXRpb25zXzc3NjVmZjFjLWE2OWMtNDE3Zi1iMjI0LTUyMjhlOWY0OGY4NA==";
+		String ANDROID = "YW5kcm9pZF9zdGF0aW9uc19lMGRlY2IwYy0xZjc0LTRlNjAtOWNhNS00ODhkNTZjZjc0MDA=";
 	}
 }
