@@ -27,10 +27,11 @@ public class MultiReadHttpServletRequestWrapper extends HttpServletRequestWrappe
 		super(request);
 		try {
 			body = IOUtils.toByteArray(request.getInputStream());
-			JsonObject body = new Gson().fromJson(new String(this.body), JsonObject.class);
+			JsonObject body;
 			String bodyString;
 
 			try {
+				body = new Gson().fromJson(new String(this.body), JsonObject.class);
 				bodyString = body.getAsJsonPrimitive("query").toString();
 			} catch (Exception ex) {
 				bodyString = "";
