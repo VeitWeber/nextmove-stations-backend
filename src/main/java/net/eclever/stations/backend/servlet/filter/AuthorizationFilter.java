@@ -181,6 +181,12 @@ public class AuthorizationFilter implements Filter {
 		cipher.init(Cipher.DECRYPT_MODE, secretKeySpec);
 		String value = new String(cipher.doFinal(new BASE64Decoder().decodeBuffer(encryptedText)));
 
+		//enable altair for local testing
+		if (Environment.IS_LOCAL)
+			if (value.equals(new String(Base64.getDecoder().decode(Environment.Platform.IOS)))) {
+				return userAgent.startsWith("Mozilla") && userAgent.contains("Safari");
+			}
+
 		if (value.equals(new String(Base64.getDecoder().decode(Environment.Platform.IOS)))) {
 			return userAgent.startsWith(Environment.UserAgents.IOS_V_1_0) && userAgent.contains("iOS");
 		}
