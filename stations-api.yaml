@@ -28,15 +28,15 @@ spec:
     spec:
       containers:
         - name: stations
-          image: 100.125.7.25:20202/eclever/stations-api:dev-2019-05-12
+          image: 100.125.7.25:20202/eclever/stations-api:61c70e1
           imagePullPolicy: IfNotPresent
           env:
             - name: STATION_POSTGRES_HOST
-              value: postgresql.default.svc.cluster.local
+              value: 192.168.0.143
             - name: STATION_POSTGRES_PORT
               value: '5432'
             - name: STATION_POSTGRES_DB
-              value: postgres
+              value: backend
             - name: STATION_POSTGRES_USER
               valueFrom:
                 secretKeyRef:
