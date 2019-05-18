@@ -1,7 +1,7 @@
-package net.eclever.stations.backend.domain.db.rel.ejb;
+package net.eclever.stations.backend.db.postgres.ejb;
 
 import net.eclever.stations.backend.Environment;
-import net.eclever.stations.backend.domain.db.rel.entities.UserEntity;
+import net.eclever.stations.backend.domain.db.rel.jpa.entities.UserEntity;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
