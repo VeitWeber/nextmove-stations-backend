@@ -113,18 +113,18 @@ public class StationsGraphQLApi {
 	 * @return Stations
 	 */
 	@GraphQLQuery(name = "stations")
-	public StationData getAllStations(@GraphQLArgument(name = "first", description = "First element") int first, @GraphQLArgument(name = "offset", description = "Offset") int offset) {
+	public StationData getAllStations(@GraphQLArgument(name = "first", description = "First element") Optional<Integer> first, @GraphQLArgument(name = "offset", description = "Offset") Optional<Integer> offset) {
 		StationData stationData = this.getAllStations();
 
-		if (first > stationData.totalCount)
+		if (first.get() > stationData.totalCount)
 			throw new IllegalArgumentException("First element beyond list size (" + stationData.totalCount + ").");
 
-		if ((first + offset) > stationData.totalCount) {
+		if ((first.get() + offset.get()) > stationData.totalCount) {
 			throw new IllegalArgumentException("Last element beyond list size (" + stationData.totalCount + ").");
 		}
 
 		try {
-			stationData.stationList = Arrays.copyOfRange(stationData.stationList, first, first + offset);
+			stationData.stationList = Arrays.copyOfRange(stationData.stationList, first.get(), first.get() + offset.get());
 			return stationData;
 		} catch (Exception ex) {
 			log.severe(Throwables.getStackTraceAsString(Throwables.getRootCause(ex)));
@@ -145,18 +145,18 @@ public class StationsGraphQLApi {
 	 * @return
 	 */
 	@GraphQLQuery(name = "stations")
-	public StationData getAllStations(@GraphQLArgument(name = "first", description = "First element") int first, @GraphQLArgument(name = "offset", description = "Offset") int offset,
+	public StationData getAllStations(@GraphQLArgument(name = "first", description = "First element") Optional<Integer> first, @GraphQLArgument(name = "offset", description = "Offset") Optional<Integer> offset,
 	                                  @GraphQLArgument(name = "lastUpdateTimestamp", description = "Timestamp since last update (yyyy-MM-dd HH:mm). Override 'forceUpdate' to true") String lastUpdateTimestamp) {
 		StationData stationData = this.getAllStations(lastUpdateTimestamp);
 
-		if (first > stationData.totalCount)
+		if (first.get() > stationData.totalCount)
 			throw new IllegalArgumentException("First element beyond list size. (" + stationData.totalCount + ").");
 
-		if ((first + offset) > stationData.totalCount) {
+		if ((first.get() + offset.get()) > stationData.totalCount) {
 			throw new IllegalArgumentException("Last element beyond list size. (" + stationData.totalCount + ").");
 		}
 		try {
-			stationData.stationList = Arrays.copyOfRange(stationData.stationList, first, first + offset);
+			stationData.stationList = Arrays.copyOfRange(stationData.stationList, first.get(), first.get() + offset.get());
 			return stationData;
 		} catch (Exception ex) {
 			log.severe(Throwables.getStackTraceAsString(Throwables.getRootCause(ex)));
@@ -179,7 +179,7 @@ public class StationsGraphQLApi {
 	 */
 	@GraphQLQuery(name = "stations")
 	public StationData getAllStations(@GraphQLArgument(name = "forceUpdate", description = "Invalidate cache and get the stations from the database.") Optional<Boolean> optionalForceUpdate,
-	                                  @GraphQLArgument(name = "first", description = "First element") int first, @GraphQLArgument(name = "offset", description = "Offset") int offset) {
+	                                  @GraphQLArgument(name = "first", description = "First element") Optional<Integer> first, @GraphQLArgument(name = "offset", description = "Offset") Optional<Integer> offset) {
 
 		try {
 			if (optionalForceUpdate.isPresent() && optionalForceUpdate.get())
@@ -200,14 +200,14 @@ public class StationsGraphQLApi {
 	 * All stations with paging with force update param since last update
 	 *
 	 * @param optionalForceUpdate
-	 * @param first
+	 * @param first                First doc
 	 * @param offset
 	 * @param lastUpdateTimestampy
 	 * @return
 	 */
 	@GraphQLQuery(name = "stations")
 	public StationData getAllStations(@GraphQLArgument(name = "forceUpdate", description = "Invalidate cache and get the stations from the database.") Optional<Boolean> optionalForceUpdate,
-	                                  @GraphQLArgument(name = "first", description = "First element") int first, @GraphQLArgument(name = "offset", description = "Offset") int offset,
+	                                  @GraphQLArgument(name = "first", description = "First element") Optional<Integer> first, @GraphQLArgument(name = "offset", description = "Offset") Optional<Integer> offset,
 	                                  @GraphQLArgument(name = "lastUpdateTimestamp", description = "Timestamp since last update (yyyy-MM-dd HH:mm). Override 'forceUpdate' to true") String lastUpdateTimestampy) {
 		try {
 			return this.getAllStations(first, offset, lastUpdateTimestampy);
