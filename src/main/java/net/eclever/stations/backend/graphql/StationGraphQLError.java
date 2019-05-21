@@ -7,9 +7,6 @@ import graphql.language.SourceLocation;
 
 import java.util.List;
 
-/**
- * @author Veit Weber, , $(DATE)
- */
 public class StationGraphQLError implements GraphQLError {
 	private final String message;
 	private final int errorCode;

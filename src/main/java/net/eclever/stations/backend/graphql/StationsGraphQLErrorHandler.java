@@ -1,12 +1,9 @@
 package net.eclever.stations.backend.graphql;
 
-/**
- * @author Veit Weber, , $(DATE)
- */
-
 import graphql.ExceptionWhileDataFetching;
 import graphql.GraphQLError;
 import graphql.servlet.GraphQLErrorHandler;
+import graphql.validation.ValidationError;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
@@ -21,8 +18,12 @@ public class StationsGraphQLErrorHandler implements GraphQLErrorHandler {
 	public List<GraphQLError> processErrors(List<GraphQLError> errors) {
 		List<GraphQLError> wrappedErrors = new ArrayList<>();
 		for (GraphQLError error : errors) {
-			if (error instanceof ExceptionWhileDataFetching) {
-				Throwable t = ((ExceptionWhileDataFetching) error).getException();
+			if (error instanceof ExceptionWhileDataFetching | error instanceof ValidationError) {
+				Throwable t;
+				if (error instanceof ValidationError)
+					t = new IllegalArgumentException(error.getMessage());
+				else
+					t = ((ExceptionWhileDataFetching) error).getException();
 				wrappedErrors.add(getGraphQLError(t));
 			}
 		}
