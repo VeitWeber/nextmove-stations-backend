@@ -15,9 +15,7 @@ public class Origins {
 			"https://back.eclever.net",
 			"https://eclever-tryout.netlify.com",
 			"https://fleet.nextmove.de",
-			"https://route.nextmove.de",
-			//todo: remove altair
-			"electron://altair"
+			"https://route.nextmove.de"
 	));
 
 	public static List<String> getSafeOrigins() {

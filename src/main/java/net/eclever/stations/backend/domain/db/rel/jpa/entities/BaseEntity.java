@@ -1,4 +1,4 @@
-package net.eclever.stations.backend.domain.db.rel.entities;
+package net.eclever.stations.backend.domain.db.rel.jpa.entities;
 
 import javax.persistence.MappedSuperclass;
 import java.io.Serializable;
