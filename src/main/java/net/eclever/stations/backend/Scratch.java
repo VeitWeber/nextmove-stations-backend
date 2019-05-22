@@ -8,21 +8,21 @@ import javax.crypto.spec.SecretKeySpec;
 
 class Scratch {
 	public static void main(String[] args) throws Exception {
-		String key = "2019-05-16";
+		String key = "2019-05-21";
 		String text = "ios_stations_7765ff1c-a69c-417f-b224-5228e9f48f84";
 
 		//encrypt
 		SecretKeySpec secretKeySpec = new SecretKeySpec(key.getBytes(), "Blowfish");
 		Cipher cipher = Cipher.getInstance("Blowfish");
 		cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec);
-		byte[] encryptedData = cipher.doFinal(text.getBytes());;
+		byte[] encryptedData = cipher.doFinal(text.getBytes());
 
 		//decrypt
 		String ecnryptedText = (new BASE64Encoder().encode(encryptedData));
-		System.out.println(ecnryptedText);
+		System.out.println("Encyrpted: " + ecnryptedText);
 		cipher.init(Cipher.DECRYPT_MODE, secretKeySpec);
 		encryptedData = cipher.doFinal(new BASE64Decoder().decodeBuffer(ecnryptedText));
 
-		System.out.println(new String(encryptedData));
+		System.out.println("Decrypted: " + new String(encryptedData));
 	}
 }

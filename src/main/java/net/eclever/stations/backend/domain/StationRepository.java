@@ -13,10 +13,10 @@ import net.eclever.stations.backend.Environment;
 import org.bson.Document;
 
 import javax.enterprise.context.ApplicationScoped;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.function.Consumer;
 
 import static com.mongodb.client.model.Filters.gte;
@@ -183,56 +183,69 @@ public class StationRepository {
 	static Station createStationFromDoc(Document document) {
 		try {
 			Gson gson = new Gson();
-			ArrayList<Chargepoint> chargepoints = new ArrayList<>();
-			document.get("chargepoints", ArrayList.class).forEach(chargepoint -> {
-				Document chargepointDoc = (Document) chargepoint;
-				Pricing pricing = new Pricing(
-						chargepointDoc.get("pricing") != null ? ((Document) chargepointDoc.get("pricing")).getBoolean("free") : null,
-						chargepointDoc.get("pricing") != null ? ((Document) chargepointDoc.get("pricing")).getString("type") : null,
-						chargepointDoc.get("pricing") != null ? ((Document) chargepointDoc.get("pricing")).getString("value") : null);
-				chargepoints.add(new Chargepoint(
-						chargepointDoc.getString("id"),
-						chargepointDoc.getBoolean("restricted"),
-						chargepointDoc.getInteger("phases"),
-						chargepointDoc.get("power") == null ? null : Double.valueOf(chargepointDoc.get("power").toString()),
-						chargepointDoc.get("type") != null ? ((Document) chargepointDoc.get("type")).getObjectId("id").toString() : null,
-						chargepointDoc.getString("status"),
-						chargepointDoc.getString("problem"),
-						chargepointDoc.get("ampere") == null ? null : Double.valueOf(chargepointDoc.get("ampere").toString()),
-						chargepointDoc.get("volt") == null ? null : Double.valueOf(chargepointDoc.get("volt").toString()),
-						chargepointDoc.getString("plugCable"),
-						pricing));
+//			ArrayList<Chargepoint> chargepoints = new ArrayList<>();
+//			document.get("chargepoints", ArrayList.class).forEach(chargepoint -> {
+//				Document chargepointDoc = (Document) chargepoint;
+//				Pricing pricing = new Pricing(
+//						chargepointDoc.get("pricing") != null ? ((Document) chargepointDoc.get("pricing")).getBoolean("free") : null,
+//						chargepointDoc.get("pricing") != null ? ((Document) chargepointDoc.get("pricing")).getString("type") : null,
+//						chargepointDoc.get("pricing") != null ? ((Document) chargepointDoc.get("pricing")).getString("value") : null);
+//				chargepoints.add(new Chargepoint(
+//						chargepointDoc.getString("id"),
+//						chargepointDoc.getBoolean("restricted"),
+//						chargepointDoc.getInteger("phases"),
+//						chargepointDoc.get("power") == null ? null : Double.valueOf(chargepointDoc.get("power").toString()),
+//						chargepointDoc.get("type") != null ? ((Document) chargepointDoc.get("type")).getObjectId("id").toString() : null,
+//						chargepointDoc.getString("status"),
+//						chargepointDoc.getString("problem"),
+//						chargepointDoc.get("ampere") == null ? null : Double.valueOf(chargepointDoc.get("ampere").toString()),
+//						chargepointDoc.get("volt") == null ? null : Double.valueOf(chargepointDoc.get("volt").toString()),
+//						chargepointDoc.getString("plugCable"),
+//						pricing));
+//
+//			});
 
-			});
-			return new Station(
+			StationAddress address = null;
+			try {
+				address = document.get("address") != null ? gson.fromJson(((Document) document.get("address")).toJson(), StationAddress.class) : null;
+			} catch (Exception ex) {
+				log.severe("Error while casting field 'address' in Document '" + document.get("_id").toString() +
+						"' to StationAddress. \n" + Throwables.getRootCause(ex).getMessage());
+			}
+			Location coordinates = null;
+			try {
+				coordinates = document.get("coordinates") != null ? gson.fromJson(((Document) document.get("coordinates")).toJson(), Location.class) : null;
+			} catch (Exception ex) {
+				log.severe("Error while casting field 'coordinates' in Document '" + document.get("_id").toString() +
+						"' to Location. \n" + Throwables.getRootCause(ex).getMessage());
+			}
+			Location approach = null;
+			try {
+				approach = document.get("approach") != null ? gson.fromJson(((Document) document.get("approach")).toJson(), Location.class) : null;
+			} catch (Exception ex) {
+				log.severe("Error while casting field 'approach' in Document '" + document.get("_id").toString() +
+						"' to Location. \n" + Throwables.getRootCause(ex).getMessage());
+			}
+
+			Station station = new Station(
 					document.get("_id").toString(),
-					document.getString("author"),
-					document.getString("name"),
-					document.getString("operator"),
-					document.get("address") != null ? gson.fromJson(((Document) document.get("address")).toJson(), StationAddress.class) : null,
-					document.get("coordinates") != null ? gson.fromJson(((Document) document.get("coordinates")).toJson(), Location.class) : null,
-					document.get("approach") != null ? gson.fromJson(((Document) document.get("approach")).toJson(), Location.class) : null,
-					document.get("createdat") != null ? document.getDate("createdat").getTime() : null,
-					document.get("editedat") != null ? document.getDate("editedat").getTime() : null,
-					document.getString("approachDescription"),
-					document.getString("manufacturer"),
-					document.get("chargepoints") != null ? chargepoints : null,
-					document.getString("buildtype"),
-					document.getString("buildconfig"),
-					document.getString("network"),
-					document.getBoolean("restricted"),
-					document.get("rating") == null ? null : Double.valueOf(document.get("rating").toString()),
-					document.get("properties") != null ? ((Document) document.get("properties")).getBoolean("verified") : null,
-					document.get("properties") != null ? ((Document) document.get("properties")).getBoolean("barrierfree") : null,
-					document.get("properties") != null ? ((Document) document.get("properties")).getBoolean("freecharging") : null,
-					document.get("properties") != null ? ((Document) document.get("properties")).getBoolean("freeparking") : null,
-					document.get("properties") != null ? ((Document) document.get("properties")).getBoolean("predelete") : null,
-					document.get("properties") != null ? ((Document) document.get("properties")).getBoolean("pricingFree") : null,
-					document.get("properties") != null ? ((Document) document.get("properties")).getBoolean("pricingContractfree") : null,
-					document.get("properties") != null ? ((Document) document.get("properties")).getBoolean("pricingBarrierfree") : null,
-					document.getInteger("parkingCapacity"),
-					document.getBoolean("parkingFree")
+					getStringFromDoc(document, document, "name"),
+					getStringFromDoc(document, document, "author"),
+					getListFromDoc(document, document, "allowed", "String"),
+					getDateFromDoc(document, document, "createdat"),
+					getDateFromDoc(document, document, "editedat"),
+					address, coordinates, approach,
+					getStringFromDoc(document, document, "approachDescription"),
+					getStringFromDoc(document, document, "network"),
+					getStringFromDoc(document, document, "operator"),
+					getBooleanFromDoc(document, document, "restricted"),
+					getBooleanFromDoc(document, document, "verified"),
+					getBooleanFromDoc(document, document, "predelete"),
+					getStringFromDoc(document, document, "description"),
+					getListFromDoc(document, document, "images", "String")
 			);
+
+			return station;
 		} catch (Exception ex) {
 			log.severe(Throwables.getStackTraceAsString(ex));
 		}
@@ -305,5 +318,6 @@ public class StationRepository {
 		}
 		return null;
 	}
+
 
 }
