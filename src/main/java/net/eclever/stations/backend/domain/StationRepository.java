@@ -238,4 +238,72 @@ public class StationRepository {
 		}
 		return null;
 	}
+
+	private static String getStringFromDoc(Document parentDoc, Document doc, String field) {
+		try {
+			return doc.getString(field);
+		} catch (Exception ex) {
+			log.severe("Error while casting field '" + field + "' in Document '" + parentDoc.get("_id").toString() +
+					"' to String. \n" + Throwables.getRootCause(ex).getMessage());
+		}
+		return "";
+	}
+
+	private static Double getDoubleFromDoc(Document parentDoc, Document doc, String field) {
+		try {
+			return doc.getDouble(field);
+		} catch (Exception ex) {
+			log.severe("Error while casting field '" + field + "' in Document '" + parentDoc.get("_id").toString() +
+					"' to Double. \n" + Throwables.getRootCause(ex).getMessage());
+		}
+		return null;
+	}
+
+	private static Integer getIntegerFromDoc(Document parentDoc, Document doc, String field) {
+		try {
+			return doc.getInteger(field);
+		} catch (Exception ex) {
+			log.severe("Error while casting field '" + field + "' in Document '" + parentDoc.get("_id").toString() +
+					"' to Integer. \n" + Throwables.getRootCause(ex).getMessage());
+		}
+		return null;
+	}
+
+	private static Boolean getBooleanFromDoc(Document parentDoc, Document doc, String field) {
+		try {
+			return doc.getBoolean(field);
+		} catch (Exception ex) {
+			log.severe("Error while casting field '" + field + "' in Document '" + parentDoc.get("_id").toString() +
+					"' to Boolean. \n" + Throwables.getRootCause(ex).getMessage());
+		}
+		return null;
+	}
+
+	private static Date getDateFromDoc(Document parentDoc, Document doc, String field) {
+		try {
+			return doc.getDate(field);
+		} catch (Exception ex) {
+			log.severe("Error while casting field '" + field + "' in Document '" + parentDoc.get("_id").toString() +
+					"' to Date. \n" + Throwables.getRootCause(ex).getMessage());
+		}
+		return null;
+	}
+
+	private static List getListFromDoc(Document parentDoc, Document doc, String field, String type) {
+		try {
+			if (type.toLowerCase().equals("string"))
+				return (List<String>) doc.get(field);
+			if (type.toLowerCase().equals("boolean"))
+				return (List<Boolean>) doc.get(field);
+			if (type.toLowerCase().equals("integer"))
+				return (List<Integer>) doc.get(field);
+			if (type.toLowerCase().equals("double"))
+				return (List<Double>) doc.get(field);
+		} catch (Exception ex) {
+			log.severe("Error while casting field '" + field + "' in Document '" + parentDoc.get("_id").toString() +
+					"' to List of type " + type + ". \n" + Throwables.getRootCause(ex).getMessage());
+		}
+		return null;
+	}
+
 }
