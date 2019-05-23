@@ -45,7 +45,7 @@ public class StationService {
 
 			FindIterable mongoCollection = collection
 					.find()
-//					.limit(200)
+					.limit(5000)
 					.sort(ascending("name"));
 
 			mongoCollection.forEach((Consumer<Document>) document -> {
