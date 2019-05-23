@@ -9,9 +9,10 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.cloud.security.GraphQLOperation;
+import com.cloud.security.MultiReadHttpServletRequestWrapper;
 import com.google.common.base.Strings;
 import net.eclever.stations.backend.Environment;
-import net.eclever.stations.backend.security.GraphQLOperation;
 import sun.misc.BASE64Decoder;
 
 import javax.crypto.BadPaddingException;

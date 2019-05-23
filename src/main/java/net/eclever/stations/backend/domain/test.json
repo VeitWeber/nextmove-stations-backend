@@ -1,0 +1,124 @@
+// NOT FROM SUBMISSION ===> FIELD EXISTS ON READ QUERY, BUT ISN'T PART OF MUTATION QUERY
+// FORMAT ===> STRING FORMATTING TO ENSURE CROSS-PLATFORM VALUES
+// REQUIRED FOR SUBMISSION ===> THOSE VALUES ARE AT A MINIMUM REQUIRED FOR A SUCCESSFUL FORM SUBMISSION
+
+// ==============================================================================
+// TYPE CHARGESTATION - "Ladestation" - Zusammenschluss einer/mehrerer Ladepunktgruppen an einem Ort
+// ==============================================================================
+{
+  "id": "string", // NOT FROM SUBMISSION
+  "name": "string",
+  "author": "string",
+  "allowed": ["string"], // LATER USAGE FOR RESTRICTED CHARGESTATIONS
+  "createdAt": "Date", // NOT FROM SUBMISSION
+  "editedAt": "Date", // NOT FROM SUBMISSION
+  "address": { // REQUIRED FOR SUBMISSION
+    "street": "string",
+    "city": "string",
+    "postcode": "string",
+    "country": "string"
+  },
+  "coordinates": { // REQUIRED FOR SUBMISSION
+    "lat": "float",
+    "lng": "float"
+  },
+  "approach": {
+    "lat": "float",
+    "lng": "float"
+  },
+  "approachDescription": "string",
+  "network": "string",
+  "operator": "string",
+  "restricted": "boolean",
+  "verified": "boolean",
+  "predelete": "boolean",
+  "description": "string",
+  "images": ["string"],
+  "imageFull": "string", // REQUIRED FOR SUBMISSION IF NOT RESTRICTED
+  "imagePayment": "string",
+  "imageTypesign": "string",
+  "parking": {
+    "parkingBarrierfree": "boolean",
+    "parkingFree": "string",
+    "parkingCapacity": "integer",
+    "parkingPricingMax": "float",
+    "parkingPricing": [
+      {
+        "cost": "float",
+        "unit": "string"
+      }
+    ],
+    "parkingHours": { // ALL DAYS PRESENT, "monday", "tuesday" ...
+      "monday": [
+        {
+          "from": "string", // FORMAT: "0000"-"2400"
+          "to": "string", // FORMAT: "0000"-"2400"
+          "duration": "float"
+        }
+      ]
+    }
+  },
+  "openingHours": {
+    "openFulltime": "boolean",
+    "days": { // ALL DAYS PRESENT, "monday", "tuesday" ...
+      "monday": [
+        {
+          "from": "string", // FORMAT: "0000"-"2400"
+          "to": "string" // FORMAT: "0000"-"2400"
+        }
+      ]
+    }
+  },
+  "chargegroups": [ CHARGEGROUP ]
+}
+// ==============================================================================
+// TYPE CHARGEGROUP - "Ladepunktgruppe" - mehrere Ladestecker an einer Ladestation
+// ==============================================================================
+{
+  "name": "string",
+  "orderPosition": "integer",
+  "manufacturer": "string",
+  "buildType": "string",
+  "buildConfig": "string",
+  "chademoSingle": "boolean",
+  "turnoffTime": "integer",
+  "withBattery": "boolean",
+  "highChargepower": "boolean",
+  "supplyCables": [
+    {
+      "ampere": "integer",
+      "volt": "integer"
+    }
+  ],
+  "loadManagement": "string", // ENUM: "network" | "battery" | "station-half" | "station-dynamic" | "station-full" | "station-single"
+  "pricing": {
+    "pricingContractfree": "boolean",
+    "pricingBarrierfree": "boolean",
+    "accessMethods": ["string"],
+    "chargecards": ["string"], // NOT FROM SUBMISSION
+  },
+  "description": "string",
+  "chargepoints": [ CHARGEPOINT ]
+}
+
+// ==============================================================================
+// TYPE CHARGEPOINT - "Ladepunkt" - einzelner Ladestecker in einer Ladepunktgruppe
+// ==============================================================================
+{
+  "id": "string", // NOT FROM SUBMISSION
+  "plugId": "string", // e.g. DEDRE83920383
+  "directpay": "string",
+  "phases": "integer",
+  "kw": "float",
+  "type": "string",
+  "status": "string", // ENUM: "AVAILABLE" | "UNAVAILABLE" | "INOPERATIVE"
+  "ampere": "float",
+  "volt": "float",
+  "plugCable": "string", // ENUM: "cable" | "plug"
+  "pricing": {
+    "onsite": "boolean",
+    "pricingFree": "boolean",
+    "pricingType": "string", // ENUM: "flatrate" | "kwh" | "min"
+    "pricingValue": "float"
+  }
+}
